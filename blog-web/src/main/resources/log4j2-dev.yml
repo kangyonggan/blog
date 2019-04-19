@@ -1,0 +1,31 @@
+Configuration:
+  status: warn
+  monitorInterval: 300
+
+  Appenders:
+    Rewrite:
+      name: MyRewrite
+      ignoreExceptions: true
+      MyRewritePolicy:
+        debug: false
+      AppenderRef:
+        - ref: STDOUT
+
+    Console:
+      name: STDOUT
+      PatternLayout:
+        pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%logger{36}.%t:%L] <%X{uuid}> - %msg%n"
+
+  Loggers:
+    Logger:
+      name: com.kangyonggan.blog.mapper
+      level: debug
+      additivity: false
+      AppenderRef:
+        - ref: MyRewrite
+
+    Root:
+      level: info
+      additivity: true
+      AppenderRef:
+        - ref: MyRewrite

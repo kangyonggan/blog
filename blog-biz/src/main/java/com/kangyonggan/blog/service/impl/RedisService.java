@@ -1,0 +1,222 @@
+package com.kangyonggan.blog.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @author longjie
+ * @since 8/14/18
+ */
+@Service
+public class RedisService {
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    /**
+     * set
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean set(String key, Object value) {
+        redisTemplate.opsForValue().set(key, value);
+        return true;
+    }
+
+    /**
+     * set
+     *
+     * @param key
+     * @param value
+     * @param value
+     * @return
+     */
+    public boolean set(String key, Object value, long timeout) {
+        redisTemplate.opsForValue().set(key, value, timeout, TimeUnit.SECONDS);
+        return true;
+    }
+
+    /**
+     * set
+     *
+     * @param key
+     * @param value
+     * @param timeout
+     * @param unit
+     * @return
+     */
+    public boolean set(String key, Object value, long timeout, TimeUnit unit) {
+        redisTemplate.opsForValue().set(key, value, timeout, unit);
+        return true;
+    }
+
+    /**
+     * get
+     *
+     * @param key
+     * @return
+     */
+    public Object get(String key) {
+        return redisTemplate.opsForValue().get(key);
+    }
+
+    /**
+     * get
+     *
+     * @param key
+     * @param defaultValue
+     * @return
+     */
+    public Object get(String key, Object defaultValue) {
+        Object val = redisTemplate.opsForValue().get(key);
+
+        return val == null ? defaultValue : val;
+    }
+
+    /**
+     * get and update expire
+     *
+     * @param key
+     * @param timeout
+     * @param unit
+     * @return
+     */
+    public Object getAndUpdateExpire(String key, long timeout, TimeUnit unit) {
+        Object object = redisTemplate.opsForValue().get(key);
+        if (object != null) {
+            redisTemplate.expire(key, timeout, unit);
+        }
+        return object;
+    }
+
+    /**
+     * multiGet
+     *
+     * @param keys
+     * @return
+     */
+    public List<Object> multiGet(Set<String> keys) {
+        return redisTemplate.opsForValue().multiGet(keys);
+    }
+
+    /**
+     * delete
+     *
+     * @param key
+     * @return
+     */
+    public Object delete(String key) {
+        Object object = redisTemplate.opsForValue().get(key);
+        if (object != null) {
+            redisTemplate.delete(key);
+        }
+        return object;
+    }
+
+    /**
+     * delete all like pattern
+     *
+     * @param pattern
+     * @return
+     */
+    public void deleteAll(String pattern) {
+        redisTemplate.delete(redisTemplate.keys(pattern));
+    }
+
+    /**
+     * increment
+     *
+     * @param key
+     * @return
+     */
+    public long increment(String key) {
+        return redisTemplate.opsForValue().increment(key, 1);
+    }
+
+    /**
+     * @param key
+     * @param value
+     * @return
+     */
+    public long leftPush(String key, Object value) {
+        return redisTemplate.opsForList().leftPush(key, value);
+    }
+
+    /**
+     * @param key
+     * @param values
+     * @return
+     */
+    public long leftPushAll(String key, Object... values) {
+        return redisTemplate.opsForList().leftPushAll(key, values);
+    }
+
+    /**
+     * @param key
+     * @return
+     */
+    public Object rightPop(String key) {
+        return redisTemplate.opsForList().rightPop(key);
+    }
+
+    /**
+     * range
+     *
+     * @param key
+     * @return
+     */
+    public List<Object> range(String key, long start, long end) {
+        return redisTemplate.opsForList().range(key, start, end);
+    }
+
+    /**
+     * hashSetNx
+     *
+     * @param hash
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean putIfAbsent(String hash, String key, String value) {
+        return redisTemplate.opsForHash().putIfAbsent(hash, key, value);
+    }
+
+    /**
+     * size
+     *
+     * @param hash
+     * @return
+     */
+    public long size(String hash) {
+        return redisTemplate.opsForHash().size(hash);
+    }
+
+    /**
+     * hashExist
+     *
+     * @param hash
+     * @param key
+     * @return
+     */
+    public boolean hasKey(String hash, String key) {
+        return redisTemplate.opsForHash().hasKey(hash, key);
+    }
+
+    /**
+     * get keys of pattern
+     *
+     * @param pattern
+     * @return
+     */
+    public Set<String> keys(String pattern) {
+        return redisTemplate.keys(pattern);
+    }
+
+}

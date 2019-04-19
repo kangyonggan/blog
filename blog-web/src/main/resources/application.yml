@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: @env@
+  application:
+    name: BLOG
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 10MB
+  cache:
+    redis:
+      time-to-live: 1800000
+      cache-null-values: false
+
+mybatis:
+  mapper-locations: classpath*:mapper/*Mapper.xml
+
+mapper:
+  identity: sqlserver
+
+logging:
+  config: classpath:log4j2-@env@.yml

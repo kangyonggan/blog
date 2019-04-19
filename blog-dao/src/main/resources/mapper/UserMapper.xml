@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kangyonggan.blog.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.kangyonggan.blog.model.User">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="salt" property="salt" jdbcType="VARCHAR"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="TINYINT"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="UserDtoResultMap" type="com.kangyonggan.blog.dto.UserDto"
+               extends="com.kangyonggan.blog.mapper.UserProfileMapper.BaseResultMap">
+    </resultMap>
+
+    <insert id="insertUserRoles">
+        INSERT INTO tb_user_role (user_id, role_id)
+        VALUES
+        <foreach collection="roleIds" item="roleId" separator=",">
+            (#{userId}, #{roleId})
+        </foreach>
+    </insert>
+
+    <select id="selectUserProfileById" resultMap="UserDtoResultMap">
+      SELECT
+          u.user_id, u.email, up.avatar, up.name, up.id_type, up.id_no, up.ip_address, u.created_time, u.is_deleted
+        FROM
+          tb_user u, tb_user_profile up
+        WHERE
+          u.user_id = up.user_id
+          AND u.user_id = #{userId}
+    </select>
+</mapper>

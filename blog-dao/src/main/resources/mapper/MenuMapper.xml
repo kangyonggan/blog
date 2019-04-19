@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kangyonggan.blog.mapper.MenuMapper">
+    <resultMap id="BaseResultMap" type="com.kangyonggan.blog.model.Menu">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="menu_id" property="menuId" jdbcType="BIGINT"/>
+        <result column="menu_code" property="menuCode" jdbcType="VARCHAR"/>
+        <result column="menu_name" property="menuName" jdbcType="VARCHAR"/>
+        <result column="parent_code" property="parentCode" jdbcType="VARCHAR"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="TINYINT"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="selectExistsUserMenuCodes" resultType="Boolean">
+        SELECT exists(
+        SELECT
+        m.menu_code
+        FROM
+        tb_user_role ur, tb_role_menu rm, tb_menu m
+        WHERE
+        ur.user_id = #{userId}
+        AND ur.role_id = rm.role_id
+        AND rm.menu_id = m.menu_id
+        AND m.menu_code IN
+        <foreach collection="menuCodes" item="menuCode" open="(" close=")" separator=",">
+            #{menuCode}
+        </foreach>
+        )
+    </select>
+
+    <select id="selectMenusByUserId" resultMap="BaseResultMap">
+      SELECT
+        DISTINCT m.*
+      FROM
+        tb_menu m, tb_role_menu rm, tb_user_role ur
+      WHERE
+        m.menu_id = rm.menu_id
+      AND rm.role_id = ur.role_id
+      AND ur.user_id = #{userId}
+      ORDER BY m.sort ASC
+    </select>
+
+    <select id="selectMenusByRoleId" resultMap="BaseResultMap">
+      SELECT
+        m.*
+      FROM
+        tb_menu m, tb_role_menu rm
+      WHERE
+        m.menu_id = rm.menu_id
+      AND rm.role_id = #{roleId}
+      ORDER BY m.sort ASC
+    </select>
+
+    <select id="deleteAllMenusByRoleId">
+        DELETE FROM tb_role_menu WHERE role_id = #{roleId}
+    </select>
+
+</mapper>

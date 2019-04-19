@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kangyonggan.blog.mapper.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.kangyonggan.blog.model.Role">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="role_id" property="roleId" jdbcType="BIGINT"/>
+        <result column="role_code" property="roleCode" jdbcType="VARCHAR"/>
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="TINYINT"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="selectExistsUserRoleCode" resultType="Boolean">
+        SELECT exists(
+        SELECT
+        r.role_id
+        FROM
+        tb_user_role ur, tb_role r
+        WHERE
+        ur.user_id = #{userId}
+        AND ur.role_id = r.role_id
+        AND r.role_code IN
+        <foreach collection="roleCodes" item="roleCode" open="(" separator="," close=")">
+            #{roleCode}
+        </foreach>
+        )
+    </select>
+
+    <delete id="deleteAllRolesByUserId">
+        DELETE FROM tb_user_role WHERE user_id = #{userId}
+    </delete>
+
+    <select id="selectRolesByUserId" resultMap="BaseResultMap">
+      SELECT r.* FROM tb_role r, tb_user_role ur WHERE
+      r.role_id = ur.role_id AND ur.user_id = #{userId} AND r.is_deleted = 0
+    </select>
+
+    <insert id="insertRoleMenus">
+        INSERT INTO tb_role_menu (role_id, menu_id) VALUES
+        <foreach collection="menuIds" item="menuId" separator=",">
+            (
+            #{roleId}, #{menuId}
+            )
+        </foreach>
+    </insert>
+</mapper>
