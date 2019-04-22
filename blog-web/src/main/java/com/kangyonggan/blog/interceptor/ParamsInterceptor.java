@@ -9,6 +9,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -80,4 +81,34 @@ public class ParamsInterceptor extends HandlerInterceptorAdapter {
         return (User) getSession().getAttribute(AppConstants.KEY_SESSION_USER);
     }
 
+    /**
+     * 获取所有请求参数
+     *
+     * @return 返回所有的参数
+     */
+    public static Map<String, String[]> getParameterMap() {
+        return getRequest().getParameterMap();
+    }
+
+    /**
+     * 获取请求参数
+     *
+     * @param name 参数名称
+     * @return 返回参数的值
+     */
+    public static String getParameter(String name) {
+        return getParameter(name, null);
+    }
+
+    /**
+     * 获取请求参数
+     *
+     * @param name         参数名称
+     * @param defaultValue 默认值
+     * @return 返回参数的值
+     */
+    public static String getParameter(String name, String defaultValue) {
+        String value = currentRequest.get().getParameter(name);
+        return value == null ? defaultValue : value;
+    }
 }

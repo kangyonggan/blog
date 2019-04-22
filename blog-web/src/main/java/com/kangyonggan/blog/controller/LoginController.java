@@ -12,7 +12,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 
@@ -39,7 +42,7 @@ public class LoginController extends BaseController {
      */
     @PostMapping("login")
     @ApiOperation("登录")
-    public Response login(@RequestBody User user) {
+    public Response login(User user) {
         Response response = successResponse();
 
         User dbUser = userService.findUserByEmail(user.getEmail());

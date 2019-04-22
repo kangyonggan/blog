@@ -15,6 +15,10 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 
 /**
  * @author kangyonggan
@@ -22,6 +26,11 @@ import java.nio.charset.Charset;
  */
 @Log4j2
 public class SecretRequestWrapper extends HttpServletRequestWrapper {
+
+    /**
+     * 最终参数=原始参数+自定义参数
+     */
+    private Map<String, String[]> parameterMap = new HashMap<>();
 
     private byte[] body;
 
@@ -37,6 +46,15 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
         this.aesIv = aesIv;
         this.params = new JSONObject();
         body = getBodyString(request).getBytes(Charset.forName(AppConstants.DEFAULT_CHARSET));
+
+        // 把原始参数放入最终参数中
+        this.parameterMap.putAll(request.getParameterMap());
+
+        // 把body中的json参数放入最终参数中
+        JSONObject jsonObject = getAttrs();
+        for (String key : jsonObject.keySet()) {
+            addParameter(key, jsonObject.get(key));
+        }
     }
 
     @Override
@@ -52,6 +70,10 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
             } catch (Exception e) {
                 throw new RuntimeException("无法获取body中加密参数对应的json对象", e);
             }
+        }
+
+        if (params == null) {
+            params = new JSONObject();
         }
 
         return params;
@@ -95,4 +117,68 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
         reader.close();
         return sb.toString();
     }
+
+    /**
+     * 把自定义参数放入最终参数中
+     *
+     * @param key
+     * @param value
+     */
+    private void addParameter(String key, Object value) {
+        if (value instanceof String[]) {
+            parameterMap.put(key, (String[]) value);
+        } else if (value instanceof String) {
+            parameterMap.put(key, new String[]{(String) value});
+        } else {
+            parameterMap.put(key, new String[]{String.valueOf(value)});
+        }
+    }
+
+    /**
+     * 重写getParameter相关方法
+     *
+     * @param name
+     * @return
+     */
+    @Override
+    public String getParameter(String name) {
+        String[] arr = parameterMap.get(name);
+        if (arr != null && arr.length > 0) {
+            return arr[0];
+        }
+        return null;
+    }
+
+    /**
+     * 重写getParameter相关方法
+     *
+     * @return
+     */
+    @Override
+    public Map<String, String[]> getParameterMap() {
+        return parameterMap;
+    }
+
+    /**
+     * 重写getParameter相关方法
+     *
+     * @return
+     */
+    @Override
+    public Enumeration<String> getParameterNames() {
+        Vector<String> vector = new Vector<>(parameterMap.keySet());
+        return vector.elements();
+    }
+
+    /**
+     * 重写getParameter相关方法
+     *
+     * @param name
+     * @return
+     */
+    @Override
+    public String[] getParameterValues(String name) {
+        return parameterMap.get(name);
+    }
 }
+

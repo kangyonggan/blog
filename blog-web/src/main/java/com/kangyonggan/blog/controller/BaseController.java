@@ -1,12 +1,10 @@
 package com.kangyonggan.blog.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.kangyonggan.blog.annotation.Secret;
 import com.kangyonggan.blog.constants.Resp;
 import com.kangyonggan.blog.dto.Response;
 import com.kangyonggan.blog.interceptor.ParamsInterceptor;
 import com.kangyonggan.blog.model.User;
-import com.kangyonggan.blog.util.SecretRequestWrapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -69,78 +67,49 @@ public class BaseController {
     }
 
     /**
-     * 获取参数
+     * 获取String类型的请求参数
      *
-     * @param key
-     * @return
+     * @param name 参数名
+     * @return 返回参数值
      */
-    protected Integer getIntegerAttr(String key) {
-        return getIntegerAttr(key, null);
+    protected String getStringParam(String name) {
+        return ParamsInterceptor.getParameter(name);
     }
 
     /**
-     * 获取参数
+     * 获取String类型的请求参数, 带默认值
      *
-     * @param key
-     * @param defaultValue
-     * @return
+     * @param name         参数名
+     * @param defaultValue 默认值
+     * @return 返回参数值
      */
-    protected Integer getIntegerAttr(String key, Integer defaultValue) {
-        Integer value = getAttrs().getInteger(key);
-        return value == null ? defaultValue : value;
+    protected String getStringParam(String name, String defaultValue) {
+        return ParamsInterceptor.getParameter(name, defaultValue);
     }
 
     /**
-     * 获取参数
+     * 获取int类型的请求参数
      *
-     * @param key
-     * @return
+     * @param name 参数名
+     * @return 返回int型的参数值
      */
-    protected String getStringAttr(String key) {
-        return getStringAttr(key, null);
+    protected int getIntegerParam(String name) {
+        return Integer.parseInt(ParamsInterceptor.getParameter(name));
     }
 
     /**
-     * 获取参数
+     * 获取int类型的请求参数, 带默认值
      *
-     * @param key
-     * @param defaultValue
-     * @return
+     * @param name         参数名
+     * @param defaultValue 默认值
+     * @return 返回int型的参数值
      */
-    protected String getStringAttr(String key, String defaultValue) {
-        String value = getAttrs().getString(key);
-        return value == null ? defaultValue : value;
-    }
-
-    /**
-     * 获取参数
-     *
-     * @param key
-     * @return
-     */
-    protected Object getAttr(String key) {
-        return getAttr(key, null);
-    }
-
-    /**
-     * 获取参数
-     *
-     * @param key
-     * @param defaultValue
-     * @return
-     */
-    protected Object getAttr(String key, Object defaultValue) {
-        return getAttrs().getOrDefault(key, defaultValue);
-    }
-
-    /**
-     * 获取参数
-     *
-     * @return
-     */
-    protected JSONObject getAttrs() {
-        SecretRequestWrapper request = (SecretRequestWrapper) ParamsInterceptor.getRequest();
-        return request.getAttrs();
+    protected int getIntegerParam(String name, int defaultValue) {
+        try {
+            return Integer.parseInt(ParamsInterceptor.getParameter(name));
+        } catch (Exception e) {
+            return defaultValue;
+        }
     }
 
 }
