@@ -1,6 +1,7 @@
 package com.kangyonggan.blog.advice;
 
 import com.alibaba.fastjson.JSON;
+import com.kangyonggan.blog.annotation.Secret;
 import com.kangyonggan.blog.util.Aes;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +33,7 @@ public class ResponseAdvice implements ResponseBodyAdvice {
 
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        if (RequestAdvice.enable(methodParameter)) {
+        if (enable(methodParameter)) {
             try {
                 return Aes.encrypt(JSON.toJSONString(o), aesKey, aesIv);
             } catch (Exception e) {
@@ -41,5 +42,35 @@ public class ResponseAdvice implements ResponseBodyAdvice {
         }
 
         return o;
+    }
+
+    /**
+     * 判断是否启用加密
+     *
+     * @param parameter
+     * @return
+     */
+    private boolean enable(MethodParameter parameter) {
+        boolean enable = false;
+
+        // 父类（第三优先级）
+        Secret superSecret = parameter.getContainingClass().getSuperclass().getAnnotation(Secret.class);
+        if (superSecret != null) {
+            enable = superSecret.enable();
+        }
+
+        // 当前类（第二优先级）
+        Secret classSecret = parameter.getContainingClass().getAnnotation(Secret.class);
+        if (classSecret != null) {
+            enable = classSecret.enable();
+        }
+
+        // 当前方法（第一优先级）
+        Secret methodSecret = parameter.getMethod().getAnnotation(Secret.class);
+        if (methodSecret != null) {
+            enable = methodSecret.enable();
+        }
+
+        return enable;
     }
 }
