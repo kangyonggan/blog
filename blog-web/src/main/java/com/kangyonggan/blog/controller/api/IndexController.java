@@ -62,7 +62,7 @@ public class IndexController extends BaseController {
     @ApiOperation("查询首页文章")
     public Response articles() {
         Response response = successResponse();
-        List<Article> articles = articleService.searchArticles(1, 6);
+        List<Article> articles = articleService.searchArticles(1, 6, null);
 
         response.put("articles", articles);
         return response;

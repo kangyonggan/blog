@@ -14,9 +14,10 @@ public interface ArticleService {
      *
      * @param pageNum
      * @param pageSize
+     * @param key
      * @return
      */
-    List<Article> searchArticles(Integer pageNum, Integer pageSize);
+    List<Article> searchArticles(Integer pageNum, Integer pageSize, String key);
 
     /**
      * 大家都在看

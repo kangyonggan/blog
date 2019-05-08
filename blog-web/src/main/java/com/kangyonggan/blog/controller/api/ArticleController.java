@@ -2,6 +2,7 @@ package com.kangyonggan.blog.controller.api;
 
 import com.github.pagehelper.PageInfo;
 import com.kangyonggan.blog.controller.BaseController;
+import com.kangyonggan.blog.dto.ArticleRequest;
 import com.kangyonggan.blog.dto.PageRequest;
 import com.kangyonggan.blog.dto.Response;
 import com.kangyonggan.blog.model.Article;
@@ -32,14 +33,15 @@ public class ArticleController extends BaseController {
     /**
      * 文章列表查询
      *
-     * @param pageRequest
+     * @param articleRequest
      * @return
      */
     @PostMapping
     @ApiOperation("文章列表查询")
-    public Response list(PageRequest pageRequest) {
+    public Response list(ArticleRequest articleRequest) {
         Response response = successResponse();
-        List<Article> articles = articleService.searchArticles(pageRequest.getPageNum(), pageRequest.getPageSize());
+        List<Article> articles = articleService.searchArticles(
+                articleRequest.getPageNum(), articleRequest.getPageSize(), articleRequest.getKey());
         PageInfo<Article> pageInfo = new PageInfo<>(articles);
 
         response.put("pageInfo", pageInfo);
