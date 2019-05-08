@@ -185,33 +185,155 @@ CREATE TABLE tb_dict
 CREATE UNIQUE INDEX type_code_UNIQUE
   ON tb_dict (dict_type, dict_code);
 
+-- ----------------------------
+--  Table structure for tb_article
+-- ----------------------------
+DROP TABLE
+  IF EXISTS tb_article;
+
+CREATE TABLE tb_article
+(
+  article_id   BIGINT(20) PRIMARY KEY AUTO_INCREMENT NOT NULL
+    COMMENT '文章ID',
+  title        VARCHAR(32)                           NOT NULL
+    COMMENT '标题',
+  summary      VARCHAR(128)                          NOT NULL
+    COMMENT '摘要',
+  content      LONGTEXT                              NOT NULL
+    COMMENT '内容',
+  user_id      BIGINT(20)                            NOT NULL
+    COMMENT '作者',
+  is_deleted   TINYINT                               NOT NULL DEFAULT 0
+    COMMENT '逻辑删除',
+  created_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP
+    COMMENT '创建时间',
+  updated_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    COMMENT '更新时间'
+)
+  COMMENT '文章表';
+
+-- ----------------------------
+--  Table structure for tb_novel
+-- ----------------------------
+DROP TABLE
+  IF EXISTS tb_novel;
+
+CREATE TABLE tb_novel
+(
+  novel_id     BIGINT(20) PRIMARY KEY AUTO_INCREMENT NOT NULL
+    COMMENT '小说ID',
+  source       VARCHAR(32)                           NOT NULL
+    COMMENT '来源',
+  code         VARCHAR(20)                           NOT NULL
+    COMMENT '小说代码',
+  name         VARCHAR(32)                           NOT NULL
+    COMMENT '书名',
+  author       VARCHAR(32)                           NOT NULL
+    COMMENT '作者',
+  cover        VARCHAR(256)                          NOT NULL DEFAULT ''
+    COMMENT '封面',
+  summary      VARCHAR(2048)                         NOT NULL
+    COMMENT '描述',
+  is_deleted   TINYINT                               NOT NULL DEFAULT 0
+    COMMENT '逻辑删除',
+  created_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP
+    COMMENT '创建时间',
+  updated_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    COMMENT '更新时间'
+)
+  COMMENT '小说表';
+CREATE UNIQUE INDEX source_code_UNIQUE
+  ON tb_novel (source, code);
+CREATE INDEX ix_source
+  ON tb_novel (source);
+CREATE INDEX ix_code
+  ON tb_novel (code);
+
+-- ----------------------------
+--  Table structure for tb_section
+-- ----------------------------
+DROP TABLE
+  IF EXISTS tb_section;
+
+CREATE TABLE tb_section
+(
+  section_id   BIGINT(20) PRIMARY KEY AUTO_INCREMENT NOT NULL
+    COMMENT '章节ID',
+  novel_id     BIGINT(20)                            NOT NULL
+    COMMENT '小说ID',
+  code         VARCHAR(20)                           NOT NULL
+    COMMENT '章节代码',
+  title        VARCHAR(64)                           NOT NULL
+    COMMENT '标题',
+  content      LONGTEXT                              NOT NULL
+    COMMENT '内容',
+  is_deleted   TINYINT                               NOT NULL DEFAULT 0
+    COMMENT '逻辑删除',
+  created_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP
+    COMMENT '创建时间',
+  updated_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    COMMENT '更新时间'
+)
+  COMMENT '章节表';
+CREATE UNIQUE INDEX novel_id_code_UNIQUE
+  ON tb_section (novel_id, code);
+CREATE INDEX ix_novel_id
+  ON tb_section (novel_id);
+
+-- ----------------------------
+--  Table structure for tb_novel_queue
+-- ----------------------------
+DROP TABLE
+  IF EXISTS tb_novel_queue;
+
+CREATE TABLE tb_novel_queue
+(
+  queue_id     BIGINT(20) PRIMARY KEY AUTO_INCREMENT NOT NULL
+    COMMENT '队列ID',
+  novel_id     BIGINT(20)                            NOT NULL
+    COMMENT '小说ID',
+  status       CHAR(1)                               NOT NULL DEFAULT 'N'
+    COMMENT '状态',
+  is_deleted   TINYINT                               NOT NULL DEFAULT 0
+    COMMENT '逻辑删除',
+  created_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP
+    COMMENT '创建时间',
+  updated_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    COMMENT '更新时间'
+)
+  COMMENT '小说更新队列表';
+CREATE INDEX ix_novel_id
+  ON tb_novel_queue (novel_id);
+CREATE INDEX ix_status
+  ON tb_novel_queue (status);
+
 #====================初始数据====================#
 
 -- ----------------------------
 --  data for tb_user
 -- ----------------------------
 INSERT INTO tb_user
-(user_id, email, PASSWORD, salt)
+  (user_id, email, PASSWORD, salt)
 VALUES
   # 密码：11111111
   (1, 'admin@kangyonggan.com', '8d0d54520fe0466ac80827d9f2f038b22e3c7c2d', 'd820c214488d7c6f');
 
 INSERT INTO tb_user_profile
-(user_id, name, id_type, id_no, ip_address)
+  (user_id, name, id_type, id_no, ip_address)
 VALUES (1, '管理员', '0', '', '127.0.0.1');
 
 -- ----------------------------
 --  data for tb_role
 -- ----------------------------
 INSERT INTO tb_role
-(role_id, role_code, role_name)
+  (role_id, role_code, role_name)
 VALUES (1, 'ROLE_ADMIN', '管理员');
 
 -- ----------------------------
 --  data for tb_menu
 -- ----------------------------
 INSERT INTO tb_menu
-(menu_code, menu_name, parent_code, sort, icon)
+  (menu_code, menu_name, parent_code, sort, icon)
 VALUES ('SYSTEM', '系统', '', 0, 'ios-cog'),
        ('SYSTEM_USER', '用户管理', 'SYSTEM', 0, ''),
        ('SYSTEM_ROLE', '角色管理', 'SYSTEM', 1, ''),
@@ -239,5 +361,20 @@ FROM tb_menu;
 --  data for tb_dict
 -- ----------------------------
 INSERT INTO tb_dict
-(dict_type, dict_code, value, sort)
-VALUES ('ID_TYPE', '0', '身份证', 0);
+  (dict_type, dict_code, value, sort)
+VALUES ('ID_TYPE', '0', '身份证', 0),
+       ('NAV', '/', '首页', 0),
+       ('NAV', '/article', '文章', 1),
+       ('NAV', '/novel', '小说', 2),
+       ('NAV', '/album', '相册', 3),
+       ('NAV', '/video', '视频', 4),
+       ('NAV', '/tools', '工具', 5),
+       ('NAV', '/game', '游戏', 6);
+
+INSERT INTO tb_novel
+  (source, code, name, author, cover, summary)
+  VALUE
+  ('NS02', '2722', '逆天邪神', '火星引力', '',
+   '掌天毒之珠，承邪神之血，修逆天之力，一代邪神，君临天下！【添加微信公众号：火星引力】【我们的yy频道：49554】，各位书友要是觉得《逆天邪神》还不错的话请不要忘记向您QQ群和微博里的朋友推荐哦！'),
+  ('NS06', '40359', ' 仁手邪妃倾世心', '凌婧', '',
+   '被嫡姐设计，错上神秘男子床榻，声名狼藉。五年后，她浴血归来，不谈情爱，只为复仇，却被权倾天下的冷面摄政王盯上。“王爷，妾身不是第一次了，身子早就不干净了，连孩子都有了，您现在退婚还来得及。”垂眸假寐的男子，豁然睁开双目，精光迸射：“娶一送一，爷赚了。”');

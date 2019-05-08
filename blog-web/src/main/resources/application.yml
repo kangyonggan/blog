@@ -18,8 +18,5 @@ spring:
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
 
-mapper:
-  identity: sqlserver
-
 logging:
   config: classpath:log4j2-@env@.yml
