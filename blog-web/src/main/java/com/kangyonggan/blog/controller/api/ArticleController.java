@@ -11,10 +11,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,10 +42,23 @@ public class ArticleController extends BaseController {
         List<Article> articles = articleService.searchArticles(pageRequest.getPageNum(), pageRequest.getPageSize());
         PageInfo<Article> pageInfo = new PageInfo<>(articles);
 
-        // 大家都在看
-        articles = articleService.findViewArticles();
-
         response.put("pageInfo", pageInfo);
+        return response;
+    }
+
+    /**
+     * 大家都在看
+     *
+     * @return
+     */
+    @GetMapping("view")
+    @ApiOperation("大家都在看")
+    public Response view() {
+        Response response = successResponse();
+
+        // 大家都在看
+        List<Article> articles = articleService.findViewArticles();
+
         response.put("articles", articles);
         return response;
     }
