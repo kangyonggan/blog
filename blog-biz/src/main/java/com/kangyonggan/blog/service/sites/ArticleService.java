@@ -16,5 +16,27 @@ public interface ArticleService {
      * @param pageSize
      * @return
      */
-    List<Article> searchArticles(int pageNum, int pageSize);
+    List<Article> searchArticles(Integer pageNum, Integer pageSize);
+
+    /**
+     * 大家都在看
+     *
+     * @return
+     */
+    List<Article> findViewArticles();
+
+    /**
+     * 查找文章
+     *
+     * @param articleId
+     * @return
+     */
+    Article findArticleById(Long articleId);
+
+    /**
+     * 更新文章
+     *
+     * @param article
+     */
+    void updateArticle(Article article);
 }

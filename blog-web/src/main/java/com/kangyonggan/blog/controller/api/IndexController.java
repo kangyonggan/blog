@@ -1,4 +1,4 @@
-package com.kangyonggan.blog.controller.web;
+package com.kangyonggan.blog.controller.api;
 
 import com.kangyonggan.blog.constants.DictType;
 import com.kangyonggan.blog.controller.BaseController;
@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
+ * 首页相关查询接口
+ *
  * @author kangyonggan
  * @since 2019-04-24
  */
@@ -41,9 +43,9 @@ public class IndexController extends BaseController {
      *
      * @return
      */
-    @GetMapping("navList")
+    @GetMapping("navs")
     @ApiOperation("查询导航")
-    public Response detail() {
+    public Response navs() {
         Response response = successResponse();
         List<Dict> navList = dictService.findDictsByDictType(DictType.NAV.getCode());
 
@@ -56,9 +58,9 @@ public class IndexController extends BaseController {
      *
      * @return
      */
-    @GetMapping("indexArticles")
+    @GetMapping("articles")
     @ApiOperation("查询首页文章")
-    public Response indexArticles() {
+    public Response articles() {
         Response response = successResponse();
         List<Article> articles = articleService.searchArticles(1, 6);
 
@@ -71,9 +73,9 @@ public class IndexController extends BaseController {
      *
      * @return
      */
-    @GetMapping("indexNovels")
+    @GetMapping("novels")
     @ApiOperation("查询首页小说")
-    public Response indexNovels() {
+    public Response novels() {
         Response response = successResponse();
         List<Novel> novels = novelService.searchNovels(1, 6);
 

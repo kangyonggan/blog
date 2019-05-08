@@ -1,9 +1,12 @@
 package com.kangyonggan.blog.model;
 
+import lombok.Data;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
-import lombok.Data;
 
 /**
  * @author kangyonggan
@@ -34,6 +37,12 @@ public class Article implements Serializable {
      */
     @Column(name = "user_id")
     private Long userId;
+
+    /**
+     * 阅读量
+     */
+    @Column(name = "view_num")
+    private Integer viewNum;
 
     /**
      * 逻辑删除

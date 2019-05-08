@@ -20,14 +20,39 @@ public class ArticleServiceImpl extends BaseService<Article> implements ArticleS
 
     @Override
     @MethodLog
-    public List<Article> searchArticles(int pageNum, int pageSize) {
+    public List<Article> searchArticles(Integer pageNum, Integer pageSize) {
         Example example = new Example(Article.class);
         example.createCriteria().andEqualTo("isDeleted", YesNo.NO.getCode());
 
-        example.selectProperties("articleId", "title", "summary", "createdTime");
+        example.selectProperties("articleId", "title", "summary", "viewNum", "createdTime");
         example.orderBy("articleId").desc();
         PageHelper.startPage(pageNum, pageSize);
 
         return myMapper.selectByExample(example);
+    }
+
+    @Override
+    @MethodLog
+    public List<Article> findViewArticles() {
+        Example example = new Example(Article.class);
+        example.createCriteria().andEqualTo("isDeleted", YesNo.NO.getCode());
+
+        example.selectProperties("articleId", "title", "summary", "viewNum", "createdTime");
+        example.orderBy("viewNum").desc();
+        PageHelper.startPage(1, 20);
+
+        return myMapper.selectByExample(example);
+    }
+
+    @Override
+    @MethodLog
+    public Article findArticleById(Long articleId) {
+        return myMapper.selectByPrimaryKey(articleId);
+    }
+
+    @Override
+    @MethodLog
+    public void updateArticle(Article article) {
+        myMapper.updateByPrimaryKeySelective(article);
     }
 }

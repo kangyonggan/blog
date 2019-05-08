@@ -203,6 +203,8 @@ CREATE TABLE tb_article
     COMMENT '内容',
   user_id      BIGINT(20)                            NOT NULL
     COMMENT '作者',
+  view_num     INTEGER                               NOT NULL DEFAULT 0
+    COMMENT '阅读量',
   is_deleted   TINYINT                               NOT NULL DEFAULT 0
     COMMENT '逻辑删除',
   created_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -374,7 +376,7 @@ VALUES ('ID_TYPE', '0', '身份证', 0),
 INSERT INTO tb_novel
   (source, code, name, author, cover, summary)
   VALUE
-  ('NS02', '2722', '逆天邪神', '火星引力', '',
+  ('NS02', '2722', '逆天邪神', '火星引力', 'upload/novel/2722.jpg',
    '掌天毒之珠，承邪神之血，修逆天之力，一代邪神，君临天下！【添加微信公众号：火星引力】【我们的yy频道：49554】，各位书友要是觉得《逆天邪神》还不错的话请不要忘记向您QQ群和微博里的朋友推荐哦！'),
   ('NS06', '40359', ' 仁手邪妃倾世心', '凌婧', '',
    '被嫡姐设计，错上神秘男子床榻，声名狼藉。五年后，她浴血归来，不谈情爱，只为复仇，却被权倾天下的冷面摄政王盯上。“王爷，妾身不是第一次了，身子早就不干净了，连孩子都有了，您现在退婚还来得及。”垂眸假寐的男子，豁然睁开双目，精光迸射：“娶一送一，爷赚了。”');
