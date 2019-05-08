@@ -77,7 +77,7 @@ public class IndexController extends BaseController {
     @ApiOperation("查询首页小说")
     public Response novels() {
         Response response = successResponse();
-        List<Novel> novels = novelService.searchNovels(1, 6);
+        List<Novel> novels = novelService.findNewNovels();
 
         response.put("novels", novels);
         return response;

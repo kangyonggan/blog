@@ -8,9 +8,9 @@ import lombok.Data;
  * @author kangyonggan
  * @since 2019-04-19
  */
-@ApiModel(description = "文章请求")
+@ApiModel(description = "搜索请求")
 @Data
-public class ArticleRequest extends PageRequest {
+public class SearchRequest extends PageRequest {
 
     /**
      * 搜索关键字

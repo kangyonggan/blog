@@ -2,9 +2,8 @@ package com.kangyonggan.blog.controller.api;
 
 import com.github.pagehelper.PageInfo;
 import com.kangyonggan.blog.controller.BaseController;
-import com.kangyonggan.blog.dto.ArticleRequest;
-import com.kangyonggan.blog.dto.PageRequest;
 import com.kangyonggan.blog.dto.Response;
+import com.kangyonggan.blog.dto.SearchRequest;
 import com.kangyonggan.blog.model.Article;
 import com.kangyonggan.blog.service.sites.ArticleService;
 import io.swagger.annotations.Api;
@@ -33,15 +32,15 @@ public class ArticleController extends BaseController {
     /**
      * 文章列表查询
      *
-     * @param articleRequest
+     * @param searchRequest
      * @return
      */
     @PostMapping
     @ApiOperation("文章列表查询")
-    public Response list(ArticleRequest articleRequest) {
+    public Response list(SearchRequest searchRequest) {
         Response response = successResponse();
         List<Article> articles = articleService.searchArticles(
-                articleRequest.getPageNum(), articleRequest.getPageSize(), articleRequest.getKey());
+                searchRequest.getPageNum(), searchRequest.getPageSize(), searchRequest.getKey());
         PageInfo<Article> pageInfo = new PageInfo<>(articles);
 
         response.put("pageInfo", pageInfo);

@@ -16,4 +16,28 @@
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
     </resultMap>
+
+    <resultMap id="BaseDtoResultMap" type="com.kangyonggan.blog.dto.NovelDto"
+               extends="com.kangyonggan.blog.mapper.NovelMapper.BaseResultMap">
+        <result column="last_section_id" property="lastSectionId" jdbcType="BIGINT"/>
+        <result column="last_section_title" property="lastSectionTitle" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="searchNovels" resultMap="BaseDtoResultMap">
+        SELECT
+        a.novel_id, a.name, a.author, a.cover, a.summary, a.updated_time,
+        b.section_id AS last_section_id, b.title AS last_section_title
+        FROM
+        tb_novel a
+        LEFT JOIN
+        (SELECT novel_id, section_id, title FROM tb_section WHERE section_id IN (SELECT MAX(section_id) FROM tb_section
+        GROUP BY novel_id)) b
+        ON a.novel_id = b.novel_id
+        <where>
+            <if test="key != null and key != ''">
+                a.name LIKE concat('%', #{key}, '%') OR a.author LIKE concat('%', #{key}, '%')
+            </if>
+        </where>
+        ORDER BY a.novel_id ASC
+    </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.kangyonggan.blog.service.sites;
 
+import com.kangyonggan.blog.dto.NovelDto;
 import com.kangyonggan.blog.model.Novel;
 
 import java.util.List;
@@ -20,9 +21,16 @@ public interface NovelService {
     /**
      * 搜索小说
      *
-     * @param pageNum
-     * @param pageSize
+     * @param key
      * @return
      */
-    List<Novel> searchNovels(int pageNum, int pageSize);
+    List<NovelDto> searchNovels(String key);
+
+    /**
+     * 查找最新小说
+     *
+     * @return
+     */
+    List<Novel> findNewNovels();
+
 }

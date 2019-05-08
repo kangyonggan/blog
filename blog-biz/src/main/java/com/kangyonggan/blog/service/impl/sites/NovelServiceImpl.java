@@ -4,6 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.kangyonggan.blog.annotation.MethodLog;
 import com.kangyonggan.blog.constants.NovelSource;
 import com.kangyonggan.blog.constants.YesNo;
+import com.kangyonggan.blog.dto.NovelDto;
+import com.kangyonggan.blog.mapper.NovelMapper;
 import com.kangyonggan.blog.model.Novel;
 import com.kangyonggan.blog.model.NovelQueue;
 import com.kangyonggan.blog.model.Section;
@@ -49,6 +51,9 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
     @Autowired
     private SectionService sectionService;
 
+    @Autowired
+    private NovelMapper novelMapper;
+
     @Override
     @MethodLog
     public void pullNovels(String novelIds) {
@@ -68,13 +73,18 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
 
     @Override
     @MethodLog
-    public List<Novel> searchNovels(int pageNum, int pageSize) {
-        Example example = new Example(Novel.class);
-        example.createCriteria().andEqualTo("isDeleted", YesNo.NO.getCode());
+    public List<NovelDto> searchNovels(String key) {
+        return novelMapper.searchNovels(key);
+    }
 
-        example.selectProperties("novelId", "name", "author", "summary", "cover", "createdTime");
+    @Override
+    public List<Novel> findNewNovels() {
+        Example example = new Example(Novel.class);
+        Example.Criteria criteria = example.createCriteria().andEqualTo("isDeleted", YesNo.NO.getCode());
+
+        example.selectProperties("novelId", "name", "author", "summary", "cover", "updatedTime");
         example.orderBy("novelId").desc();
-        PageHelper.startPage(pageNum, pageSize);
+        PageHelper.startPage(1, 6);
 
         return myMapper.selectByExample(example);
     }
