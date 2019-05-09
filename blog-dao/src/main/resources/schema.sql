@@ -375,6 +375,37 @@ CREATE INDEX ix_album_id
 CREATE INDEX ix_sort
   ON tb_album_photo (sort);
 
+-- ----------------------------
+--  Table structure for tb_video
+-- ----------------------------
+DROP TABLE
+  IF EXISTS tb_video;
+
+CREATE TABLE tb_video
+(
+  video_id     BIGINT(20) PRIMARY KEY AUTO_INCREMENT NOT NULL
+    COMMENT '视频ID',
+  user_id      BIGINT(20)                            NOT NULL
+    COMMENT '用户ID',
+  title        VARCHAR(64)                           NOT NULL
+    COMMENT '标题',
+  cover        VARCHAR(128)                          NOT NULL
+    COMMENT '视频封面',
+  content      VARCHAR(512)                          NOT NULL
+    COMMENT '视频代码',
+  view_num     INT(11)                               NOT NULL DEFAULT 0
+    COMMENT '观看量',
+  is_deleted   TINYINT                               NOT NULL DEFAULT 0
+    COMMENT '逻辑删除',
+  created_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP
+    COMMENT '创建时间',
+  updated_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    COMMENT '更新时间'
+)
+  COMMENT '视频表';
+CREATE INDEX ix_user_id
+  ON tb_video (user_id);
+
 #====================初始数据====================#
 
 -- ----------------------------

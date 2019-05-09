@@ -1,5 +1,6 @@
 package com.kangyonggan.blog.service.impl.sites;
 
+import com.kangyonggan.blog.annotation.MethodLog;
 import com.kangyonggan.blog.constants.YesNo;
 import com.kangyonggan.blog.model.Album;
 import com.kangyonggan.blog.service.BaseService;
@@ -26,6 +27,7 @@ public class AlbumServiceImpl extends BaseService<Album> implements AlbumService
     }
 
     @Override
+    @MethodLog
     public Album findAlbumByAlbumId(Long albumId) {
         return myMapper.selectByPrimaryKey(albumId);
     }
