@@ -25,7 +25,7 @@
 
     <select id="searchNovels" resultMap="BaseDtoResultMap">
         SELECT
-        a.novel_id, a.name, a.author, a.cover, a.summary, a.updated_time,
+        a.novel_id, a.name, a.author, a.cover, a.summary, a.created_time, a.updated_time,
         b.section_id AS last_section_id, b.title AS last_section_title
         FROM
         tb_novel a

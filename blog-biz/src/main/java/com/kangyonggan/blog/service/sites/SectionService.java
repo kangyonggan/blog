@@ -67,4 +67,13 @@ public interface SectionService {
      * @return
      */
     Section findNextSection(Long novelId, Long sectionId);
+
+    /**
+     * 分页查找小说章节
+     *
+     * @param novelId
+     * @param pageNum
+     * @return
+     */
+    List<Section> findSectionsByPage(Long novelId, Integer pageNum);
 }

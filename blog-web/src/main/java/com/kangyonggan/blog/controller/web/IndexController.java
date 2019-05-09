@@ -1,4 +1,4 @@
-package com.kangyonggan.blog.controller.api;
+package com.kangyonggan.blog.controller.web;
 
 import com.kangyonggan.blog.constants.DictType;
 import com.kangyonggan.blog.controller.BaseController;
