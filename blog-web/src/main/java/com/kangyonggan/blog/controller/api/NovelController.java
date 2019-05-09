@@ -124,4 +124,31 @@ public class NovelController extends BaseController {
         return response;
     }
 
+    /**
+     * 查看小说章节
+     *
+     * @param novelId
+     * @return
+     */
+    @PostMapping("section")
+    @ApiOperation("查看小说章节")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "novelId", value = "小说ID", required = true, example = "1"),
+            @ApiImplicitParam(name = "sectionId", value = "章节ID", required = true, example = "1")
+    })
+    public Response section(@RequestParam("novelId") Long novelId, @RequestParam("sectionId") Long sectionId) {
+        Response response = successResponse();
+
+        Novel novel = novelService.findNovelById(novelId);
+        Section section = sectionService.findSectionById(sectionId);
+        Section prevSection = sectionService.findPrevSection(novelId, sectionId);
+        Section nextSection = sectionService.findNextSection(novelId, sectionId);
+
+        response.put("novel", novel);
+        response.put("section", section);
+        response.put("prevSection", prevSection);
+        response.put("nextSection", nextSection);
+        return response;
+    }
+
 }
