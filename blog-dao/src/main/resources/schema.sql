@@ -309,6 +309,72 @@ CREATE INDEX ix_novel_id
 CREATE INDEX ix_status
   ON tb_novel_queue (status);
 
+-- ----------------------------
+--  Table structure for tb_album
+-- ----------------------------
+DROP TABLE
+  IF EXISTS tb_album;
+
+CREATE TABLE tb_album
+(
+  album_id     BIGINT(20) PRIMARY KEY AUTO_INCREMENT NOT NULL
+    COMMENT '相册ID',
+  user_id      BIGINT(20)                            NOT NULL
+    COMMENT '用户ID',
+  album_name   VARCHAR(64)                           NOT NULL
+    COMMENT '相册名称',
+  cover        VARCHAR(256)                          NOT NULL DEFAULT ''
+    COMMENT '封面',
+  password     VARCHAR(6)                            NOT NULL DEFAULT ''
+    COMMENT '密码',
+  size         INT(11)                               NOT NULL DEFAULT 0
+    COMMENT '大小',
+  sort         INT(11)                               NOT NULL DEFAULT 0
+    COMMENT '排序(从0开始)',
+  is_deleted   TINYINT                               NOT NULL DEFAULT 0
+    COMMENT '逻辑删除',
+  created_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP
+    COMMENT '创建时间',
+  updated_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    COMMENT '更新时间'
+)
+  COMMENT '相册表';
+CREATE INDEX ix_user_id
+  ON tb_album (user_id);
+
+-- ----------------------------
+--  Table structure for tb_album_photo
+-- ----------------------------
+DROP TABLE
+  IF EXISTS tb_album_photo;
+
+CREATE TABLE tb_album_photo
+(
+  photo_id     BIGINT(20) PRIMARY KEY AUTO_INCREMENT NOT NULL
+    COMMENT '照片ID',
+  album_id     BIGINT(20)                            NOT NULL
+    COMMENT '相册ID',
+  description  VARCHAR(64)                           NOT NULL
+    COMMENT '描述',
+  url          VARCHAR(256)                          NOT NULL DEFAULT ''
+    COMMENT '图片地址',
+  thumb        VARCHAR(256)                          NOT NULL DEFAULT ''
+    COMMENT '缩略图地址',
+  sort         INT(11)                               NOT NULL DEFAULT 0
+    COMMENT '排序(从0开始)',
+  is_deleted   TINYINT                               NOT NULL DEFAULT 0
+    COMMENT '逻辑删除',
+  created_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP
+    COMMENT '创建时间',
+  updated_time TIMESTAMP                             NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    COMMENT '更新时间'
+)
+  COMMENT '照片表';
+CREATE INDEX ix_album_id
+  ON tb_album_photo (album_id);
+CREATE INDEX ix_sort
+  ON tb_album_photo (sort);
+
 #====================初始数据====================#
 
 -- ----------------------------
