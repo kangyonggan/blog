@@ -38,4 +38,29 @@ public class SectionServiceImpl extends BaseService<Section> implements SectionS
     public void saveSection(Section section) {
         myMapper.insertSelective(section);
     }
+
+    @Override
+    @MethodLog
+    public List<Section> findLastSections(Long novelId) {
+        Example example = new Example(Section.class);
+        example.createCriteria().andEqualTo("novelId", novelId);
+        example.setOrderByClause("section_id desc");
+
+        example.selectProperties("sectionId", "title");
+
+        PageHelper.startPage(1, 9);
+        return myMapper.selectByExample(example);
+    }
+
+    @Override
+    @MethodLog
+    public List<Section> findSections(Long novelId) {
+        Example example = new Example(Section.class);
+        example.createCriteria().andEqualTo("novelId", novelId);
+        example.setOrderByClause("section_id asc");
+
+        example.selectProperties("sectionId", "novelId", "title");
+
+        return myMapper.selectByExample(example);
+    }
 }

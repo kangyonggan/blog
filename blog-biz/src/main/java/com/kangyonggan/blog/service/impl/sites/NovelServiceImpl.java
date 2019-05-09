@@ -89,6 +89,12 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
         return myMapper.selectByExample(example);
     }
 
+    @Override
+    @MethodLog
+    public Novel findNovelById(Long novelId) {
+        return myMapper.selectByPrimaryKey(novelId);
+    }
+
     /**
      * 如果没有线程在消费队列，则启动一个
      *

@@ -73,4 +73,14 @@ public enum NovelSource {
         this.name = name;
         this.url = url;
     }
+
+    public static String getUrlByCode(String code) {
+        for (NovelSource novelSource : NovelSource.values()) {
+            if (novelSource.getCode().equals(code)) {
+                return novelSource.getUrl();
+            }
+        }
+
+        return null;
+    }
 }

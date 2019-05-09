@@ -33,4 +33,11 @@ public interface NovelService {
      */
     List<Novel> findNewNovels();
 
+    /**
+     * 查找小说
+     *
+     * @param novelId
+     * @return
+     */
+    Novel findNovelById(Long novelId);
 }

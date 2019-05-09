@@ -70,4 +70,15 @@ public class NovelQueueServiceImpl extends BaseService<NovelQueue> implements No
         myMapper.updateByExampleSelective(queue, example);
     }
 
+    @Override
+    @MethodLog
+    public NovelQueue findNovelQueue(Long novelId) {
+        Example example = new Example(NovelQueue.class);
+        example.createCriteria().andEqualTo("novelId", novelId);
+        example.setOrderByClause("queue_id desc");
+
+        PageHelper.startPage(1, 1);
+        return myMapper.selectOneByExample(example);
+    }
+
 }

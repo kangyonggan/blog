@@ -37,4 +37,11 @@ public interface NovelQueueService {
      */
     void finished(Long novelId);
 
+    /**
+     * 查找小说最后更新队列
+     *
+     * @param novelId
+     * @return
+     */
+    NovelQueue findNovelQueue(Long novelId);
 }
