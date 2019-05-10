@@ -195,9 +195,9 @@ CREATE TABLE tb_article
 (
   article_id   BIGINT(20) PRIMARY KEY AUTO_INCREMENT NOT NULL
     COMMENT '文章ID',
-  title        VARCHAR(32)                           NOT NULL
+  title        VARCHAR(64)                           NOT NULL
     COMMENT '标题',
-  summary      VARCHAR(128)                          NOT NULL
+  summary      VARCHAR(256)                          NOT NULL
     COMMENT '摘要',
   content      LONGTEXT                              NOT NULL
     COMMENT '内容',
