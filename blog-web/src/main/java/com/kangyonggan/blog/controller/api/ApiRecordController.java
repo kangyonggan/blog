@@ -20,7 +20,7 @@ import java.util.List;
  * @since 9/25/18
  */
 @RestController
-@RequestMapping("wx")
+@RequestMapping("api/record")
 @Secret(enable = false)
 @Log4j2
 public class ApiRecordController extends BaseController {
@@ -40,7 +40,7 @@ public class ApiRecordController extends BaseController {
      * @param jsCode
      * @return
      */
-    @GetMapping("getOpenId")
+    @GetMapping("openId")
     public Response getOpenId(String jsCode) {
         Response response = successResponse();
         try {
@@ -64,8 +64,8 @@ public class ApiRecordController extends BaseController {
      * @param record
      * @return
      */
-    @PostMapping("saveRecord")
-    public Response saveRecord(@RequestBody Record record) {
+    @PostMapping
+    public Response save(@RequestBody Record record) {
         recordService.saveRecord(record);
         return successResponse();
     }
@@ -77,8 +77,8 @@ public class ApiRecordController extends BaseController {
      * @param pageNum
      * @return
      */
-    @GetMapping("records")
-    public Response records(@RequestParam(value = "openid", required = false, defaultValue = "") String openid,
+    @GetMapping
+    public Response list(@RequestParam(value = "openid", required = false, defaultValue = "") String openid,
                             @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum) {
         Response response = successResponse();
         List<Record> records = recordService.findRecords(openid, pageNum);
@@ -93,8 +93,8 @@ public class ApiRecordController extends BaseController {
      * @param id
      * @return
      */
-    @GetMapping("record/{id:[\\d]+}")
-    public Response records(@PathVariable("id") Long id) {
+    @GetMapping("{id:[\\d]+}")
+    public Response detail(@PathVariable("id") Long id) {
         Response response = successResponse();
         Record record = recordService.findRecordById(id);
 
