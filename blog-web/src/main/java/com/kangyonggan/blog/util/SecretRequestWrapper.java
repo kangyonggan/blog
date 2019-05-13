@@ -50,6 +50,10 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
         // 把原始参数放入最终参数中
         this.parameterMap.putAll(request.getParameterMap());
 
+        if (request.getRequestURI().startsWith("/wx/")) {
+            return;
+        }
+
         // 把body中的json参数放入最终参数中
         JSONObject jsonObject = getAttrs();
         for (String key : jsonObject.keySet()) {
