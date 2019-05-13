@@ -29,7 +29,7 @@ public class ArticleServiceImpl extends BaseService<Article> implements ArticleS
             criteria.andLike("title", StringUtil.toLike(key));
         }
 
-        example.selectProperties("articleId", "title", "summary", "viewNum", "createdTime");
+        example.selectProperties("articleId", "title", "summary", "viewNum", "createdTime", "content");
         example.orderBy("createdTime").desc();
         PageHelper.startPage(pageNum, pageSize);
 
