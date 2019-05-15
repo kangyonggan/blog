@@ -40,4 +40,12 @@ public interface NovelService {
      * @return
      */
     Novel findNovelById(Long novelId);
+
+    /**
+     * 如果没有线程在消费队列，则启动一个
+     *
+     * @param isCheck
+     * @return
+     */
+    Long popOrCheck(boolean isCheck);
 }

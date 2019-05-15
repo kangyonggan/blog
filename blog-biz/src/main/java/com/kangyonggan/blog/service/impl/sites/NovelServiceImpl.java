@@ -58,7 +58,6 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
 
     @Override
     @MethodLog
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void pullNovels(String novelIds) {
         if (StringUtils.isEmpty(novelIds)) {
             return;
@@ -104,7 +103,9 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
      * @param isCheck
      * @return
      */
-    private synchronized Long popOrCheck(boolean isCheck) {
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Override
+    public synchronized Long popOrCheck(boolean isCheck) {
         if (isCheck) {
             if (!isStarting) {
                 startThread();

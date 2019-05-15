@@ -97,6 +97,7 @@ public class ApiNovelController extends BaseController {
     public Response pull(@PathVariable("novelId") Long novelId) {
         Response response = successResponse();
         if (novelQueueService.exists(novelId)) {
+            novelService.popOrCheck(true);
             return response.failure("小说已经加入更新队列，无需重复操作");
         }
         novelService.pullNovels(String.valueOf(novelId));
