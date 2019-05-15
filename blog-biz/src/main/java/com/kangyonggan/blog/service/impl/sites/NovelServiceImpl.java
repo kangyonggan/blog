@@ -262,6 +262,19 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
             Document sectionDoc = HtmlUtil.parseUrl(NovelSource.NS08.getUrl() + "xiaoshuo/" + novel.getCode() + "/" + code + ".html");
             title = sectionDoc.select("#box h2").html().trim();
             content = sectionDoc.select("#box p.Text").html();
+        } else if (NovelSource.NS09.getCode().equals(novel.getSource())) {
+            // 小说宝库
+            int timer = 5;
+            while (timer-- > 0) {
+                Document sectionDoc = HtmlUtil.parseUrl(NovelSource.NS09.getUrl() + "xs/" + novel.getCode() + "/" + code + ".html");
+                title = sectionDoc.select("#nr_title h1").html().trim();
+                content = sectionDoc.select("#content").html();
+                if (content.contains("403 Forbidden")) {
+                    log.warn("403 Forbidden. retry");
+                } else {
+                    break;
+                }
+            }
         } else {
             log.error("未知小说源, name={}, source={}", novel.getName(), novel.getSource());
         }
@@ -316,6 +329,8 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
         } else if (NovelSource.NS08.getCode().equals(novel.getSource())) {
             // 2K小说
             startIndex = 4;
+        } else if (NovelSource.NS09.getCode().equals(novel.getSource())) {
+            // 小说宝库
         } else {
             log.error("未知小说源, name={}, source={}", novel.getName(), novel.getSource());
         }
@@ -361,6 +376,10 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
             // 2K小说
             Document document = HtmlUtil.parseUrl(NovelSource.NS08.getUrl() + "xiaoshuo/" + novel.getCode() + "/");
             return document.select("dl.book dd a");
+        } else if (NovelSource.NS09.getCode().equals(novel.getSource())) {
+            // 小说宝库
+            Document document = HtmlUtil.parseUrl(NovelSource.NS09.getUrl() + "dir/" + novel.getCode() + "/");
+            return document.select("div.read dl:last-child dd a");
         } else {
             log.error("未知小说源, name={}, source={}", novel.getName(), novel.getSource());
         }

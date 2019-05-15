@@ -48,7 +48,12 @@ public enum NovelSource {
     /**
      * 2K小说
      */
-    NS08("NS08", "2K小说", "https://www.fpzw.com/");
+    NS08("NS08", "2K小说", "https://www.fpzw.com/"),
+
+    /**
+     * 小说宝库
+     */
+    NS09("NS09", "小说宝库", "https://www.govtz.com/");
 
     /**
      * 来源代码
