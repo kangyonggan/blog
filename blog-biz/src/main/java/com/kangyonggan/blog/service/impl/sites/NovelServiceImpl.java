@@ -21,6 +21,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -56,6 +58,7 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
 
     @Override
     @MethodLog
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void pullNovels(String novelIds) {
         if (StringUtils.isEmpty(novelIds)) {
             return;
@@ -267,7 +270,7 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
             int timer = 5;
             while (timer-- > 0) {
                 Document sectionDoc = HtmlUtil.parseUrl(NovelSource.NS09.getUrl() + "xs/" + novel.getCode() + "/" + code + ".html");
-                title = sectionDoc.select("#nr_title h1").html().trim();
+                title = sectionDoc.select("div.area h1").html().trim();
                 content = sectionDoc.select("#content").html();
                 if (content.contains("403 Forbidden")) {
                     log.warn("403 Forbidden. retry");
