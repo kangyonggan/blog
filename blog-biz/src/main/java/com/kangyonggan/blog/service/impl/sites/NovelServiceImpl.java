@@ -279,6 +279,11 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
                     break;
                 }
             }
+        } else if (NovelSource.NS10.getCode().equals(novel.getSource())) {
+            // 笔趣阁5
+            Document sectionDoc = HtmlUtil.parseUrl(NovelSource.NS10.getUrl() + novel.getCode() + "/" + code + ".html");
+            title = sectionDoc.select(".bookname h1").html().trim();
+            content = sectionDoc.select("#content").html();
         } else {
             log.error("未知小说源, name={}, source={}", novel.getName(), novel.getSource());
         }
@@ -333,8 +338,9 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
         } else if (NovelSource.NS08.getCode().equals(novel.getSource())) {
             // 2K小说
             startIndex = 4;
-        } else if (NovelSource.NS09.getCode().equals(novel.getSource())) {
-            // 小说宝库
+        } else if (NovelSource.NS10.getCode().equals(novel.getSource())) {
+            // 笔趣阁5
+            startIndex = 12;
         } else {
             log.error("未知小说源, name={}, source={}", novel.getName(), novel.getSource());
         }
@@ -384,6 +390,10 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
             // 小说宝库
             Document document = HtmlUtil.parseUrl(NovelSource.NS09.getUrl() + "dir/" + novel.getCode() + "/");
             return document.select("div.read dl:last-child dd a");
+        }else if (NovelSource.NS10.getCode().equals(novel.getSource())) {
+            // 笔趣阁5
+            Document document = HtmlUtil.parseUrl(NovelSource.NS10.getUrl() + novel.getCode() + "/");
+            return document.select("#list dl dd a");
         } else {
             log.error("未知小说源, name={}, source={}", novel.getName(), novel.getSource());
         }

@@ -53,7 +53,12 @@ public enum NovelSource {
     /**
      * 小说宝库
      */
-    NS09("NS09", "小说宝库", "https://www.govtz.com/");
+    NS09("NS09", "小说宝库", "https://www.govtz.com/"),
+
+    /**
+     * 笔趣阁5
+     */
+    NS10("NS10", "笔趣阁5", "https://www.ibiquge.net/");
 
     /**
      * 来源代码
