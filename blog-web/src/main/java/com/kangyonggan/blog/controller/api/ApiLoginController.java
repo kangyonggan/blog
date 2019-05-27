@@ -12,6 +12,7 @@ import com.kangyonggan.blog.service.system.MenuService;
 import com.kangyonggan.blog.service.system.UserService;
 import com.kangyonggan.blog.util.Digests;
 import com.kangyonggan.blog.util.Encodes;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +33,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api")
 @Log4j2
+@Api(tags = "ApiLoginController", description = "登录、登出相关接口")
 public class ApiLoginController extends BaseController {
 
     @Autowired
@@ -87,6 +89,7 @@ public class ApiLoginController extends BaseController {
      * @return
      */
     @GetMapping("userData")
+    @PermissionLogin
     @ApiOperation("获取用户数据")
     public Response userData() {
         Response response = successResponse();
@@ -100,6 +103,7 @@ public class ApiLoginController extends BaseController {
      * @return
      */
     @GetMapping("menus")
+    @PermissionLogin
     @ApiOperation("获取用户菜单")
     public Response menus() {
         Response response = successResponse();
