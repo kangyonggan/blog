@@ -1,6 +1,7 @@
 package com.kangyonggan.blog.util;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.kangyonggan.blog.constants.AppConstants;
 import lombok.extern.log4j.Log4j2;
@@ -50,10 +51,6 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
         // 把原始参数放入最终参数中
         this.parameterMap.putAll(request.getParameterMap());
 
-        if (request.getRequestURI().startsWith("/wx/")) {
-            return;
-        }
-
         // 把body中的json参数放入最终参数中
         JSONObject jsonObject = getAttrs();
         for (String key : jsonObject.keySet()) {
@@ -90,7 +87,7 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
         return new ServletInputStream() {
 
             @Override
-            public int read() throws IOException {
+            public int read() {
                 return inputStream.read();
             }
 
@@ -133,6 +130,11 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
             parameterMap.put(key, (String[]) value);
         } else if (value instanceof String) {
             parameterMap.put(key, new String[]{(String) value});
+        } else if (value instanceof JSONArray) {
+            JSONArray jsonArray = (JSONArray) value;
+            String[] values = new String[jsonArray.size()];
+            jsonArray.toArray(values);
+            parameterMap.put(key, values);
         } else {
             parameterMap.put(key, new String[]{String.valueOf(value)});
         }

@@ -24,4 +24,16 @@ public class PageRequest extends Request {
     @ApiModelProperty(value = "分页大小", example = "10")
     private Integer pageSize = 10;
 
+    /**
+     * 排序的列
+     */
+    @ApiModelProperty("排序的列")
+    private String sort;
+
+    /**
+     * 排序顺序(0: 升序，1：降序)
+     */
+    @ApiModelProperty("排序顺序(0: 升序，1：降序)")
+    private Byte order;
+
 }

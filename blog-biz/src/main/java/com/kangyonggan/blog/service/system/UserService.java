@@ -1,7 +1,9 @@
 package com.kangyonggan.blog.service.system;
 
-import com.kangyonggan.blog.dto.UserDto;
+import com.kangyonggan.blog.dto.UserRequest;
 import com.kangyonggan.blog.model.User;
+
+import java.util.List;
 
 /**
  * @author kangyonggan
@@ -21,9 +23,23 @@ public interface UserService {
      * 更新用户
      *
      * @param user
+     */
+    void updateUser(User user);
+
+    /**
+     * 更新用户角色
+     *
+     * @param user
      * @param roleIds
      */
-    void updateUser(User user, String[] roleIds);
+    void updateUserRole(User user, String[] roleIds);
+
+    /**
+     * 更新用户密码
+     *
+     * @param user
+     */
+    void updateUserPassword(User user);
 
     /**
      * 校验邮箱是否存在
@@ -42,17 +58,10 @@ public interface UserService {
     void saveUser(User user, String ipAddress);
 
     /**
-     * 删除用户
+     * 搜索用户
      *
-     * @param userId
-     */
-    void deleteUser(Long userId);
-
-    /**
-     * 查找用户信息
-     *
-     * @param userId
+     * @param userRequest
      * @return
      */
-    UserDto findUserProfileById(Long userId);
+    List<User> searchUsers(UserRequest userRequest);
 }

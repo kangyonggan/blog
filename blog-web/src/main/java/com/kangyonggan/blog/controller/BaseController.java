@@ -5,6 +5,7 @@ import com.kangyonggan.blog.constants.Resp;
 import com.kangyonggan.blog.dto.Response;
 import com.kangyonggan.blog.interceptor.ParamsInterceptor;
 import com.kangyonggan.blog.model.User;
+import com.kangyonggan.blog.util.IpUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -110,6 +111,15 @@ public class BaseController {
         } catch (Exception e) {
             return defaultValue;
         }
+    }
+
+    /**
+     * 获取请求IP
+     *
+     * @return
+     */
+    protected String getIpAddress() {
+        return IpUtil.getIpAddress(ParamsInterceptor.getRequest());
     }
 
 }

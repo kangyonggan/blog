@@ -1,8 +1,9 @@
 package com.kangyonggan.blog.service.impl.system;
 
+import com.github.pagehelper.PageHelper;
 import com.kangyonggan.blog.annotation.MethodLog;
 import com.kangyonggan.blog.constants.AppConstants;
-import com.kangyonggan.blog.dto.UserDto;
+import com.kangyonggan.blog.dto.UserRequest;
 import com.kangyonggan.blog.mapper.UserMapper;
 import com.kangyonggan.blog.model.User;
 import com.kangyonggan.blog.model.UserProfile;
@@ -12,18 +13,20 @@ import com.kangyonggan.blog.service.system.UserProfileService;
 import com.kangyonggan.blog.service.system.UserService;
 import com.kangyonggan.blog.util.Digests;
 import com.kangyonggan.blog.util.Encodes;
+import com.kangyonggan.blog.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
+
+import java.util.List;
 
 /**
  * @author kangyonggan
  * @since 12/6/18
  */
 @Service
-@CacheConfig(cacheNames = "blog:user")
 public class UserServiceImpl extends BaseService<User> implements UserService {
 
     @Autowired
@@ -44,13 +47,22 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
     @Override
     @MethodLog
+    public void updateUser(User user) {
+        myMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    @MethodLog
     @Transactional(rollbackFor = Exception.class)
-    public void updateUser(User user, String[] roleIds) {
-        if (StringUtils.isNotEmpty(user.getPassword())) {
-            entryptPassword(user);
-        } else {
-            updateUserRoles(user.getUserId(), roleIds);
-        }
+    public void updateUserRole(User user, String[] roleIds) {
+        updateUserRoles(user.getUserId(), roleIds);
+        myMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    @MethodLog
+    public void updateUserPassword(User user) {
+        entryptPassword(user);
         myMapper.updateByPrimaryKeySelective(user);
     }
 
@@ -84,14 +96,33 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
     @Override
     @MethodLog
-    public void deleteUser(Long userId) {
-        myMapper.deleteByPrimaryKey(userId);
-    }
+    public List<User> searchUsers(UserRequest userRequest) {
+        Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
 
-    @Override
-    @MethodLog
-    public UserDto findUserProfileById(Long userId) {
-        return userMapper.selectUserProfileById(userId);
+        String email = userRequest.getEmail();
+        if (StringUtils.isNotEmpty(email)) {
+            criteria.andLike("email", StringUtil.toLike(email));
+        }
+
+        String[] createdTime = userRequest.getCreatedTime();
+        if (createdTime != null && StringUtils.isNotEmpty(createdTime[0])) {
+            criteria.andGreaterThanOrEqualTo("createdTime", createdTime[0]);
+            criteria.andLessThanOrEqualTo("createdTime", createdTime[1]);
+        }
+
+        if (StringUtils.isNotEmpty(userRequest.getSort())) {
+            if (userRequest.getOrder() == 0) {
+                example.orderBy(userRequest.getSort()).asc();
+            } else {
+                example.orderBy(userRequest.getSort()).desc();
+            }
+        } else {
+            example.orderBy("userId").desc();
+        }
+
+        PageHelper.startPage(userRequest.getPageNum(), userRequest.getPageSize());
+        return myMapper.selectByExample(example);
     }
 
     /**

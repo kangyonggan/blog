@@ -433,13 +433,13 @@ VALUES (1, 'ROLE_ADMIN', '管理员');
 -- ----------------------------
 INSERT INTO tb_menu
   (menu_code, menu_name, parent_code, sort, icon)
-VALUES ('SYSTEM', '系统', '', 0, 'social-windows-outline'),
+VALUES ('SYSTEM', '系统', '', 0, 'md-settings'),
        ('SYSTEM_USER', '用户管理', 'SYSTEM', 0, ''),
        ('SYSTEM_ROLE', '角色管理', 'SYSTEM', 1, ''),
        ('SYSTEM_MENU', '菜单管理', 'SYSTEM', 2, ''),
        ('SYSTEM_DICT', '数据字典', 'SYSTEM', 3, ''),
 
-       ('SITES', '网站', '', 1, 'android-desktop'),
+       ('SITES', '网站', '', 1, 'md-desktop'),
        ('SITES_ARTICLE', '文章管理', 'SITES', 0, ''),
        ('SITES_ALBUM', '相册管理', 'SITES', 1, ''),
        ('SITES_VIDEO', '视频管理', 'SITES', 2, ''),
