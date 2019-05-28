@@ -3,6 +3,7 @@ package com.kangyonggan.blog.controller.api;
 import com.kangyonggan.blog.annotation.PermissionLogin;
 import com.kangyonggan.blog.controller.BaseController;
 import com.kangyonggan.blog.dto.Response;
+import com.kangyonggan.blog.service.system.RoleService;
 import com.kangyonggan.blog.service.system.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -24,6 +25,9 @@ public class ApiValidateController extends BaseController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RoleService roleService;
+
     /**
      * 校验电子邮箱是否存在
      *
@@ -34,11 +38,31 @@ public class ApiValidateController extends BaseController {
     @PermissionLogin
     @ApiOperation("校验电子邮箱是否存在")
     @ApiImplicitParam(name = "email", value = "电子邮箱", required = true, example = "admin@kangyonggan.com")
-    public Response list(String email) {
+    public Response email(String email) {
         Response response = successResponse();
 
         if (userService.existsEmail(email)) {
             response.failure("电子邮箱已存在");
+        }
+
+        return response;
+    }
+
+    /**
+     * 校验角色代码是否存在
+     *
+     * @param roleCode
+     * @return
+     */
+    @PostMapping("role")
+    @PermissionLogin
+    @ApiOperation("校验角色代码是否存在")
+    @ApiImplicitParam(name = "roleCode", value = "角色代码", required = true, example = "ROLE_ADMIN")
+    public Response role(String roleCode) {
+        Response response = successResponse();
+
+        if (roleService.existsRoleCode(roleCode)) {
+            response.failure("角色代码已存在");
         }
 
         return response;

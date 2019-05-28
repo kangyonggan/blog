@@ -81,6 +81,12 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
         return super.exists(menu);
     }
 
+    @Override
+    @MethodLog
+    public List<Menu> findRoleMenus(Long roleId) {
+        return menuMapper.selectMenusByRoleId(roleId);
+    }
+
     /**
      * 递归找出 parentCode 下边的所有子节点
      *

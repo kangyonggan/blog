@@ -1,7 +1,7 @@
 package com.kangyonggan.blog.controller.api;
 
 import com.github.pagehelper.PageInfo;
-import com.kangyonggan.blog.annotation.PermissionRole;
+import com.kangyonggan.blog.annotation.PermissionMenu;
 import com.kangyonggan.blog.controller.BaseController;
 import com.kangyonggan.blog.dto.Response;
 import com.kangyonggan.blog.dto.UserRequest;
@@ -44,7 +44,7 @@ public class ApiSystemUserController extends BaseController {
      */
     @PostMapping
     @ApiOperation("用户列表查询")
-    @PermissionRole("ROLE_ADMIN")
+    @PermissionMenu("SYSTEM_USER")
     public Response list(UserRequest userRequest) {
         Response response = successResponse();
 
@@ -62,7 +62,7 @@ public class ApiSystemUserController extends BaseController {
      * @return
      */
     @PostMapping("save")
-    @PermissionRole("ROLE_ADMIN")
+    @PermissionMenu("SYSTEM_USER")
     @ApiOperation("保存用户")
     public Response save(User user) {
         userService.saveUser(user, getIpAddress());
@@ -77,7 +77,7 @@ public class ApiSystemUserController extends BaseController {
      * @return
      */
     @PostMapping("role")
-    @PermissionRole("ROLE_ADMIN")
+    @PermissionMenu("SYSTEM_USER")
     @ApiOperation("查询用户角色")
     @ApiImplicitParam(name = "userId", value = "用户ID", required = true, example = "1")
     public Response role(Long userId) {
@@ -100,7 +100,7 @@ public class ApiSystemUserController extends BaseController {
      */
     @PostMapping("update")
     @ApiOperation("更新用户")
-    @PermissionRole("ROLE_ADMIN")
+    @PermissionMenu("SYSTEM_USER")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户ID", required = true, example = "1"),
             @ApiImplicitParam(name = "email", value = "电子邮箱", required = true, example = "app@kangyonggan.com"),
@@ -124,7 +124,7 @@ public class ApiSystemUserController extends BaseController {
      */
     @PostMapping("password")
     @ApiOperation("修改密码")
-    @PermissionRole("ROLE_ADMIN")
+    @PermissionMenu("SYSTEM_USER")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户ID", required = true, example = "1"),
             @ApiImplicitParam(name = "password", value = "密码", required = true, example = "11111111")
@@ -147,7 +147,7 @@ public class ApiSystemUserController extends BaseController {
      */
     @PostMapping("delete")
     @ApiOperation("删除/恢复用户")
-    @PermissionRole("ROLE_ADMIN")
+    @PermissionMenu("SYSTEM_USER")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户ID", required = true, example = "1"),
             @ApiImplicitParam(name = "isDeleted", value = "是否删除(0:恢复，1:删除)", required = true, example = "0")

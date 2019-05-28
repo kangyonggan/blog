@@ -78,4 +78,12 @@ public interface MenuService {
      * @return
      */
     boolean existsMenuCode(String menuCode);
+
+    /**
+     * 查找角色菜单
+     *
+     * @param roleId
+     * @return
+     */
+    List<Menu> findRoleMenus(Long roleId);
 }

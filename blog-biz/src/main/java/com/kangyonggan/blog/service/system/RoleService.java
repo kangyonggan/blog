@@ -1,5 +1,6 @@
 package com.kangyonggan.blog.service.system;
 
+import com.kangyonggan.blog.dto.RoleRequest;
 import com.kangyonggan.blog.model.Role;
 
 import java.util.List;
@@ -42,13 +43,6 @@ public interface RoleService {
     List<Role> findRolesByUserId(Long userId);
 
     /**
-     * 删除角色
-     *
-     * @param roleId
-     */
-    void deleteRole(Long roleId);
-
-    /**
      * 保存角色
      *
      * @param role
@@ -59,9 +53,16 @@ public interface RoleService {
      * 更新角色
      *
      * @param role
+     */
+    void updateRole(Role role);
+
+    /**
+     * 更新角色菜单
+     *
+     * @param role
      * @param menuIds
      */
-    void updateRole(Role role, String[] menuIds);
+    void updateRoleMenu(Role role, String[] menuIds);
 
     /**
      * 判断角色代码是否存在
@@ -70,4 +71,12 @@ public interface RoleService {
      * @return
      */
     boolean existsRoleCode(String roleCode);
+
+    /**
+     * 搜索角色
+     *
+     * @param roleRequest
+     * @return
+     */
+    List<Role> searchRoles(RoleRequest roleRequest);
 }

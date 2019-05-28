@@ -133,7 +133,9 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
         } else if (value instanceof JSONArray) {
             JSONArray jsonArray = (JSONArray) value;
             String[] values = new String[jsonArray.size()];
-            jsonArray.toArray(values);
+            for (int i = 0; i < jsonArray.size(); i++) {
+                values[i] = String.valueOf(jsonArray.get(i));
+            }
             parameterMap.put(key, values);
         } else {
             parameterMap.put(key, new String[]{String.valueOf(value)});

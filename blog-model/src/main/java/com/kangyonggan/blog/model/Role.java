@@ -1,5 +1,7 @@
 package com.kangyonggan.blog.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -14,42 +16,49 @@ import java.util.Date;
  */
 @Table(name = "tb_role")
 @Data
+@ApiModel(description = "角色相关请求")
 public class Role implements Serializable {
     /**
      * 主键, 自增
      */
     @Id
     @Column(name = "role_id")
+    @ApiModelProperty(hidden = true)
     private Long roleId;
 
     /**
      * 角色代码
      */
     @Column(name = "role_code")
+    @ApiModelProperty("角色代码")
     private String roleCode;
 
     /**
      * 角色名称
      */
     @Column(name = "role_name")
+    @ApiModelProperty("角色名称")
     private String roleName;
 
     /**
      * 逻辑删除
      */
     @Column(name = "is_deleted")
+    @ApiModelProperty(hidden = true)
     private Byte isDeleted;
 
     /**
      * 创建时间
      */
     @Column(name = "created_time")
+    @ApiModelProperty(hidden = true)
     private Date createdTime;
 
     /**
      * 更新时间
      */
     @Column(name = "updated_time")
+    @ApiModelProperty(hidden = true)
     private Date updatedTime;
 
     private static final long serialVersionUID = 1L;
