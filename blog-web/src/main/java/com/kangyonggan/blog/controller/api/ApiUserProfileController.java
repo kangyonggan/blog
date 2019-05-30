@@ -1,15 +1,20 @@
 package com.kangyonggan.blog.controller.api;
 
 import com.kangyonggan.blog.annotation.PermissionMenu;
+import com.kangyonggan.blog.constants.AppConstants;
 import com.kangyonggan.blog.controller.BaseController;
 import com.kangyonggan.blog.dto.Response;
-import com.kangyonggan.blog.dto.UserDto;
+import com.kangyonggan.blog.model.User;
 import com.kangyonggan.blog.model.UserProfile;
 import com.kangyonggan.blog.service.system.UserProfileService;
 import com.kangyonggan.blog.service.system.UserService;
+import com.kangyonggan.blog.util.Digests;
+import com.kangyonggan.blog.util.Encodes;
 import com.kangyonggan.blog.util.FileHelper;
 import com.kangyonggan.blog.util.FileUpload;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +91,37 @@ public class ApiUserProfileController extends BaseController {
         userProfileService.updateUserProfile(userProfile);
 
         return successResponse();
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param oldPassword
+     * @param password
+     * @return
+     */
+    @PostMapping("password")
+    @ApiOperation("修改密码")
+    @PermissionMenu("USER_PROFILE")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "oldPassword", value = "老密码", required = true, example = "11111111"),
+            @ApiImplicitParam(name = "password", value = "新密码", required = true, example = "22222222")
+    })
+    public Response password(String oldPassword, String password) {
+        Response response = successResponse();
+        User user = userService.findUserByEmail(currentUser().getEmail());
+
+        byte[] salt = Encodes.decodeHex(user.getSalt());
+        byte[] hashPassword = Digests.sha1(oldPassword.getBytes(), salt, AppConstants.HASH_INTERATIONS);
+        oldPassword = Encodes.encodeHex(hashPassword);
+        if (!user.getPassword().equals(oldPassword)) {
+            return response.failure("老密码错误");
+        }
+
+        user.setPassword(password);
+        userService.updateUserPassword(user);
+
+        return response;
     }
 
 }
