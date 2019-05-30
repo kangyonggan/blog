@@ -3,6 +3,7 @@ package com.kangyonggan.blog.controller.api;
 import com.kangyonggan.blog.annotation.PermissionMenu;
 import com.kangyonggan.blog.controller.BaseController;
 import com.kangyonggan.blog.dto.Response;
+import com.kangyonggan.blog.dto.UserDto;
 import com.kangyonggan.blog.model.UserProfile;
 import com.kangyonggan.blog.service.system.UserProfileService;
 import com.kangyonggan.blog.service.system.UserService;
@@ -69,6 +70,22 @@ public class ApiUserProfileController extends BaseController {
 
         response.put("user", userService.findUserDtoById(currentUserId()));
         return response;
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param userProfile
+     * @return
+     */
+    @PostMapping
+    @ApiOperation("更新用户信息")
+    @PermissionMenu("USER_PROFILE")
+    public Response update(UserProfile userProfile) {
+        userProfile.setUserId(currentUserId());
+        userProfileService.updateUserProfile(userProfile);
+
+        return successResponse();
     }
 
 }

@@ -7,6 +7,7 @@ import com.kangyonggan.blog.service.system.DictService;
 import com.kangyonggan.blog.service.system.MenuService;
 import com.kangyonggan.blog.service.system.RoleService;
 import com.kangyonggan.blog.service.system.UserService;
+import com.kangyonggan.blog.util.IdNoUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -106,16 +107,36 @@ public class ApiValidateController extends BaseController {
      */
     @PostMapping("dict")
     @PermissionLogin
-    @ApiOperation("校验菜单代码是否存在")
+    @ApiOperation("校验字典代码是否存在")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dictType", value = "字典类型", required = true, example = "NAV"),
             @ApiImplicitParam(name = "dictCode", value = "字典代码", required = true, example = "/article")
     })
-    public Response menu(String dictType, String dictCode) {
+    public Response dict(String dictType, String dictCode) {
         Response response = successResponse();
 
         if (dictService.existsDictCode(dictType, dictCode)) {
             response.failure("字典代码已存在");
+        }
+
+        return response;
+    }
+
+    /**
+     * 校验证件号码是否合法
+     *
+     * @param idNo
+     * @return
+     */
+    @PostMapping("idNo")
+    @PermissionLogin
+    @ApiOperation("校验证件号码是否合法")
+    @ApiImplicitParam(name = "idNo", value = "证件号码", required = true, example = "340321199103173095")
+    public Response idNo(String idNo) {
+        Response response = successResponse();
+
+        if (!IdNoUtil.isIdCard(idNo)) {
+            response.failure("身份证号码不合法");
         }
 
         return response;

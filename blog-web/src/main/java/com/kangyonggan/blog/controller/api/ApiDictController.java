@@ -4,9 +4,11 @@ import com.kangyonggan.blog.annotation.PermissionLogin;
 import com.kangyonggan.blog.constants.EnumUtil;
 import com.kangyonggan.blog.controller.BaseController;
 import com.kangyonggan.blog.dto.Response;
+import com.kangyonggan.blog.service.system.DictService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,24 +18,27 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2019-05-28
  */
 @RestController
-@RequestMapping("api/enum")
-@Api(tags = "ApiEnumController", description = "枚举相关接口")
-public class ApiEnumController extends BaseController {
+@RequestMapping("api/dict")
+@Api(tags = "ApiDictController", description = "字典相关接口")
+public class ApiDictController extends BaseController {
+
+    @Autowired
+    private DictService dictService;
 
     /**
-     * 查询枚举列表
+     * 查询字典列表
      *
-     * @param enumKey
+     * @param dictType
      * @return
      */
     @PostMapping
     @PermissionLogin
-    @ApiOperation("查询枚举列表")
-    @ApiImplicitParam(name = "enumKey", value = "枚举的键", required = true, example = "DictType")
-    public Response enumList(String enumKey) {
+    @ApiOperation("查询字典列表")
+    @ApiImplicitParam(name = "dictType", value = "字典类型", required = true, example = "ID_TYPE")
+    public Response dicts(String dictType) {
         Response response = successResponse();
 
-        response.put("enumList", EnumUtil.getInstance().getEnumList(enumKey));
+        response.put("dicts", dictService.findDictsByDictType(dictType));
         return response;
     }
 
