@@ -73,7 +73,7 @@ DROP TABLE
 CREATE TABLE tb_role
 (
   role_id      BIGINT(20) PRIMARY KEY AUTO_INCREMENT NOT NULL
-    COMMENT '主键, 自增',
+    COMMENT '角色ID',
   role_code    VARCHAR(32)                           NOT NULL
     COMMENT '角色代码',
   role_name    VARCHAR(32)                           NOT NULL
@@ -98,7 +98,7 @@ DROP TABLE
 CREATE TABLE tb_menu
 (
   menu_id      BIGINT(20) PRIMARY KEY AUTO_INCREMENT NOT NULL
-    COMMENT '主键, 自增',
+    COMMENT '菜单ID',
   menu_code    VARCHAR(32)                           NOT NULL
     COMMENT '菜单代码',
   menu_name    VARCHAR(32)                           NOT NULL

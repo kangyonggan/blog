@@ -3,6 +3,7 @@ package com.kangyonggan.blog.controller.api;
 import com.kangyonggan.blog.annotation.PermissionLogin;
 import com.kangyonggan.blog.controller.BaseController;
 import com.kangyonggan.blog.dto.Response;
+import com.kangyonggan.blog.service.system.MenuService;
 import com.kangyonggan.blog.service.system.RoleService;
 import com.kangyonggan.blog.service.system.UserService;
 import io.swagger.annotations.Api;
@@ -27,6 +28,9 @@ public class ApiValidateController extends BaseController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private MenuService menuService;
 
     /**
      * 校验电子邮箱是否存在
@@ -63,6 +67,26 @@ public class ApiValidateController extends BaseController {
 
         if (roleService.existsRoleCode(roleCode)) {
             response.failure("角色代码已存在");
+        }
+
+        return response;
+    }
+
+    /**
+     * 校验菜单代码是否存在
+     *
+     * @param menuCode
+     * @return
+     */
+    @PostMapping("menu")
+    @PermissionLogin
+    @ApiOperation("校验菜单代码是否存在")
+    @ApiImplicitParam(name = "menuCode", value = "菜单代码", required = true, example = "SYSTEM_USER")
+    public Response menu(String menuCode) {
+        Response response = successResponse();
+
+        if (menuService.existsMenuCode(menuCode)) {
+            response.failure("菜单代码已存在");
         }
 
         return response;

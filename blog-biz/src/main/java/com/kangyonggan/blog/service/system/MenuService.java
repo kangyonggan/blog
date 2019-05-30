@@ -36,14 +36,6 @@ public interface MenuService {
     List<Menu> findAllMenus();
 
     /**
-     * 获取角色菜单
-     *
-     * @param roleId
-     * @return
-     */
-    List<Menu> findMenusByRoleId(Long roleId);
-
-    /**
      * 删除角色所有菜单
      *
      * @param roleId

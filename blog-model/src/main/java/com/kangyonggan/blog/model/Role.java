@@ -19,7 +19,7 @@ import java.util.Date;
 @ApiModel(description = "角色相关请求")
 public class Role implements Serializable {
     /**
-     * 主键, 自增
+     * 角色ID
      */
     @Id
     @Column(name = "role_id")

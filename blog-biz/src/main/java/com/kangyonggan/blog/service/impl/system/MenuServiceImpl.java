@@ -46,11 +46,6 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
     }
 
     @Override
-    public List<Menu> findMenusByRoleId(Long roleId) {
-        return menuMapper.selectMenusByRoleId(roleId);
-    }
-
-    @Override
     public void deleteAllMenusByRoleId(Long roleId) {
         menuMapper.deleteAllMenusByRoleId(roleId);
     }
