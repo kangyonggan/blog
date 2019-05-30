@@ -1,5 +1,6 @@
 package com.kangyonggan.blog.service.system;
 
+import com.kangyonggan.blog.dto.DictRequest;
 import com.kangyonggan.blog.model.Dict;
 
 import java.util.List;
@@ -9,13 +10,6 @@ import java.util.List;
  * @since 2019-04-02
  */
 public interface DictService {
-
-    /**
-     * 删除字典
-     *
-     * @param dictId
-     */
-    void deleteDict(Long dictId);
 
     /**
      * 保存字典
@@ -49,11 +43,10 @@ public interface DictService {
     List<Dict> findDictsByDictType(String dictType);
 
     /**
-     * 查找字典
+     * 搜索字典
      *
-     * @param dictType
-     * @param dictCode
+     * @param dictRequest
      * @return
      */
-    Dict findDictByTypeAndCode(String dictType, String dictCode);
+    List<Dict> searchDicts(DictRequest dictRequest);
 }

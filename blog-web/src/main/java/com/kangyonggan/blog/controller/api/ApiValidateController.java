@@ -3,11 +3,13 @@ package com.kangyonggan.blog.controller.api;
 import com.kangyonggan.blog.annotation.PermissionLogin;
 import com.kangyonggan.blog.controller.BaseController;
 import com.kangyonggan.blog.dto.Response;
+import com.kangyonggan.blog.service.system.DictService;
 import com.kangyonggan.blog.service.system.MenuService;
 import com.kangyonggan.blog.service.system.RoleService;
 import com.kangyonggan.blog.service.system.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +33,9 @@ public class ApiValidateController extends BaseController {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private DictService dictService;
 
     /**
      * 校验电子邮箱是否存在
@@ -87,6 +92,30 @@ public class ApiValidateController extends BaseController {
 
         if (menuService.existsMenuCode(menuCode)) {
             response.failure("菜单代码已存在");
+        }
+
+        return response;
+    }
+
+    /**
+     * 校验字典代码是否存在
+     *
+     * @param dictType
+     * @param dictCode
+     * @return
+     */
+    @PostMapping("dict")
+    @PermissionLogin
+    @ApiOperation("校验菜单代码是否存在")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "dictType", value = "字典类型", required = true, example = "NAV"),
+            @ApiImplicitParam(name = "dictCode", value = "字典代码", required = true, example = "/article")
+    })
+    public Response menu(String dictType, String dictCode) {
+        Response response = successResponse();
+
+        if (dictService.existsDictCode(dictType, dictCode)) {
+            response.failure("字典代码已存在");
         }
 
         return response;
