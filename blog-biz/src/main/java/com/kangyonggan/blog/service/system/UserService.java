@@ -1,5 +1,6 @@
 package com.kangyonggan.blog.service.system;
 
+import com.kangyonggan.blog.dto.UserDto;
 import com.kangyonggan.blog.dto.UserRequest;
 import com.kangyonggan.blog.model.User;
 
@@ -64,4 +65,12 @@ public interface UserService {
      * @return
      */
     List<User> searchUsers(UserRequest userRequest);
+
+    /**
+     * 查询用户信息
+     *
+     * @param userId
+     * @return
+     */
+    UserDto findUserDtoById(Long userId);
 }

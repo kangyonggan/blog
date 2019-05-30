@@ -26,7 +26,7 @@
         </foreach>
     </insert>
 
-    <select id="selectUserProfileById" resultMap="UserDtoResultMap">
+    <select id="selectUserDtoById" resultMap="UserDtoResultMap">
       SELECT
           u.user_id, u.email, up.avatar, up.name, up.id_type, up.id_no, up.ip_address, u.created_time, u.is_deleted
         FROM

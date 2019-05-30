@@ -15,6 +15,8 @@ import java.io.IOException;
  */
 public final class FileUpload {
 
+    public static final String PICTURE_EXT = "jpeg,jpg,png,gif";
+
     /**
      * 私有构造, 任何时候都不能实例化
      */

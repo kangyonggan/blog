@@ -3,6 +3,7 @@ package com.kangyonggan.blog.service.impl.system;
 import com.github.pagehelper.PageHelper;
 import com.kangyonggan.blog.annotation.MethodLog;
 import com.kangyonggan.blog.constants.AppConstants;
+import com.kangyonggan.blog.dto.UserDto;
 import com.kangyonggan.blog.dto.UserRequest;
 import com.kangyonggan.blog.mapper.UserMapper;
 import com.kangyonggan.blog.model.User;
@@ -123,6 +124,12 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
         PageHelper.startPage(userRequest.getPageNum(), userRequest.getPageSize());
         return myMapper.selectByExample(example);
+    }
+
+    @Override
+    @MethodLog
+    public UserDto findUserDtoById(Long userId) {
+        return userMapper.selectUserDtoById(userId);
     }
 
     /**

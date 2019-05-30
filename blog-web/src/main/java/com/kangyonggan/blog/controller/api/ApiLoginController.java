@@ -93,7 +93,7 @@ public class ApiLoginController extends BaseController {
     @ApiOperation("获取用户数据")
     public Response userData() {
         Response response = successResponse();
-        response.put("user", currentUser());
+        response.put("user", userService.findUserDtoById(currentUserId()));
         return response;
     }
 

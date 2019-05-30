@@ -443,7 +443,11 @@ VALUES ('SYSTEM', '系统', '', 0, 'md-settings'),
        ('SITES_ARTICLE', '文章管理', 'SITES', 0, ''),
        ('SITES_ALBUM', '相册管理', 'SITES', 1, ''),
        ('SITES_VIDEO', '视频管理', 'SITES', 2, ''),
-       ('SITES_NOVEL', '小说管理', 'SITES', 3, '');
+       ('SITES_NOVEL', '小说管理', 'SITES', 3, ''),
+
+       ('USER', '我的', '', 2, 'md-person'),
+       ('USER_PROFILE', '个人资料', 'USER', 0, ''),
+       ('USER_PASSWORD', '修改密码', 'USER', 1, '');
 
 -- ----------------------------
 --  data for tb_user_role

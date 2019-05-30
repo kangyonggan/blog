@@ -39,5 +39,6 @@ public interface UserMapper extends MyMapper<User> {
      * @param userId
      * @return
      */
-    UserDto selectUserProfileById(@Param("userId") Long userId);
+    UserDto selectUserDtoById(Long userId);
+
 }
