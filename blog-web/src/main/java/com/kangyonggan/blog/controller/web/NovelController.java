@@ -57,6 +57,23 @@ public class NovelController extends BaseController {
     }
 
     /**
+     * 预查询小说
+     *
+     * @param key
+     * @return
+     */
+    @PostMapping("preSearch")
+    @ApiOperation("预查询小说")
+    @ApiImplicitParam(name = "key", value = "搜索关键字", required = true, example = "逆天")
+    public Response preSearch(String key) {
+        Response response = successResponse();
+        List<NovelDto> novels = novelService.searchNovels(key);
+
+        response.put("preList", novels);
+        return response;
+    }
+
+    /**
      * 最新小说
      *
      * @return

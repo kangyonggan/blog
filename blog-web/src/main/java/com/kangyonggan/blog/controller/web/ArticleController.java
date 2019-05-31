@@ -6,6 +6,7 @@ import com.kangyonggan.blog.dto.Response;
 import com.kangyonggan.blog.dto.SearchRequest;
 import com.kangyonggan.blog.model.Article;
 import com.kangyonggan.blog.service.sites.ArticleService;
+import com.kangyonggan.blog.util.Collections3;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -44,6 +45,23 @@ public class ArticleController extends BaseController {
         PageInfo<Article> pageInfo = new PageInfo<>(articles);
 
         response.put("pageInfo", pageInfo);
+        return response;
+    }
+
+    /**
+     * 预查询文章
+     *
+     * @param key
+     * @return
+     */
+    @PostMapping("preSearch")
+    @ApiOperation("预查询文章")
+    @ApiImplicitParam(name = "key", value = "搜索关键字", required = true, example = "java")
+    public Response preSearch(String key) {
+        Response response = successResponse();
+        List<Article> articles = articleService.searchArticles(1, 15, key);
+
+        response.put("preList", Collections3.extractToList(articles, "title"));
         return response;
     }
 
