@@ -45,7 +45,7 @@ public class ArticleServiceImpl extends BaseService<Article> implements ArticleS
                 example.orderBy(articleRequest.getSort()).desc();
             }
         } else {
-            example.orderBy("articleId").desc();
+            example.orderBy("createdTime").desc();
         }
 
         PageHelper.startPage(articleRequest.getPageNum(), articleRequest.getPageSize());
