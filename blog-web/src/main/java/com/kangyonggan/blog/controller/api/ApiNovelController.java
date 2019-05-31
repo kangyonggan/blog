@@ -41,7 +41,7 @@ public class ApiNovelController extends BaseController {
     @GetMapping
     public Response list() {
         Response response = successResponse();
-        List<NovelDto> novels = novelService.searchNovels(null);
+        List<NovelDto> novels = novelService.searchNovels("");
 
         response.put("novels", novels);
         return response;

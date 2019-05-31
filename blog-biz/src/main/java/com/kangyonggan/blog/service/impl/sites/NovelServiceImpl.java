@@ -5,6 +5,7 @@ import com.kangyonggan.blog.annotation.MethodLog;
 import com.kangyonggan.blog.constants.NovelSource;
 import com.kangyonggan.blog.constants.YesNo;
 import com.kangyonggan.blog.dto.NovelDto;
+import com.kangyonggan.blog.dto.NovelRequest;
 import com.kangyonggan.blog.mapper.NovelMapper;
 import com.kangyonggan.blog.model.Novel;
 import com.kangyonggan.blog.model.NovelQueue;
@@ -14,6 +15,7 @@ import com.kangyonggan.blog.service.sites.NovelQueueService;
 import com.kangyonggan.blog.service.sites.NovelService;
 import com.kangyonggan.blog.service.sites.SectionService;
 import com.kangyonggan.blog.util.HtmlUtil;
+import com.kangyonggan.blog.util.StringUtil;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
@@ -121,6 +123,48 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
 
             return novelQueue.getNovelId();
         }
+    }
+
+    @Override
+    @MethodLog
+    public List<Novel> searchNovels(NovelRequest novelRequest) {
+        Example example = new Example(Novel.class);
+        Example.Criteria criteria = example.createCriteria();
+
+        String name = novelRequest.getName();
+        if (StringUtils.isNotEmpty(name)) {
+            criteria.andLike("name", StringUtil.toLike(name));
+        }
+
+        String author = novelRequest.getAuthor();
+        if (StringUtils.isNotEmpty(author)) {
+            criteria.andLike("author", StringUtil.toLike(author));
+        }
+
+        if (StringUtils.isNotEmpty(novelRequest.getSort())) {
+            if (novelRequest.getOrder() == 0) {
+                example.orderBy(novelRequest.getSort()).asc();
+            } else {
+                example.orderBy(novelRequest.getSort()).desc();
+            }
+        } else {
+            example.orderBy("novelId").desc();
+        }
+
+        PageHelper.startPage(novelRequest.getPageNum(), novelRequest.getPageSize());
+        return myMapper.selectByExample(example);
+    }
+
+    @Override
+    @MethodLog
+    public void saveNovel(Novel novel) {
+        myMapper.insertSelective(novel);
+    }
+
+    @Override
+    @MethodLog
+    public void updateNovel(Novel novel) {
+        myMapper.updateByPrimaryKeySelective(novel);
     }
 
     /**

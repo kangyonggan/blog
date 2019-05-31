@@ -1,6 +1,7 @@
 package com.kangyonggan.blog.service.sites;
 
 import com.kangyonggan.blog.dto.NovelDto;
+import com.kangyonggan.blog.dto.NovelRequest;
 import com.kangyonggan.blog.model.Novel;
 
 import java.util.List;
@@ -48,4 +49,27 @@ public interface NovelService {
      * @return
      */
     Long popOrCheck(boolean isCheck);
+
+    /**
+     * 搜索小说
+     *
+     * @param novelRequest
+     * @return
+     */
+    List<Novel> searchNovels(NovelRequest novelRequest);
+
+    /**
+     * 保存小说
+     *
+     * @param novel
+     */
+    void saveNovel(Novel novel);
+
+    /**
+     * 更新小说
+     *
+     * @param novel
+     */
+    void updateNovel(Novel novel);
+
 }

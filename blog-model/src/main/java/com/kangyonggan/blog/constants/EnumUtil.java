@@ -53,8 +53,8 @@ public final class EnumUtil {
                     linkedHashMap.put(String.valueOf(codeValue), nameValue);
 
                     Map<String, Object> map = new HashMap<>(8);
-                    map.put(e.code(), codeValue);
-                    map.put(e.name(), nameValue);
+                    map.put("code", codeValue);
+                    map.put("name", nameValue);
                     list.add(map);
                 }
 

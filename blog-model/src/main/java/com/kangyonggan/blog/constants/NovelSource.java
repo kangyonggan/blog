@@ -1,5 +1,6 @@
 package com.kangyonggan.blog.constants;
 
+import com.kangyonggan.blog.annotation.Enum;
 import lombok.Getter;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Getter;
  * @author kangyonggan
  * @since 8/9/18
  */
+@Enum(name = "url")
 public enum NovelSource {
 
     /**
