@@ -1,5 +1,6 @@
 package com.kangyonggan.blog.service.sites;
 
+import com.kangyonggan.blog.dto.VideoRequest;
 import com.kangyonggan.blog.model.Video;
 
 import java.util.List;
@@ -30,4 +31,19 @@ public interface VideoService {
      * @param video
      */
     void updateVideo(Video video);
+
+    /**
+     * 搜索视频
+     *
+     * @param videoRequest
+     * @return
+     */
+    List<Video> searchVideos(VideoRequest videoRequest);
+
+    /**
+     * 保存视频
+     *
+     * @param video
+     */
+    void saveVideo(Video video);
 }
