@@ -60,7 +60,12 @@ public enum NovelSource {
     /**
      * 笔趣阁5
      */
-    NS10("NS10", "笔趣阁5", "https://www.ibiquge.net/");
+    NS10("NS10", "笔趣阁5", "https://www.ibiquge.net/"),
+
+    /**
+     * 笔趣阁6
+     */
+    NS11("NS11", "笔趣阁6", "https://www.biquge.info/");
 
     /**
      * 来源代码
