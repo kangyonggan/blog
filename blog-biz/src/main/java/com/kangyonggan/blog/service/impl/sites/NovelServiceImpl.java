@@ -82,6 +82,13 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
     }
 
     @Override
+    @MethodLog
+    public List<NovelDto> searchNovelsByPage(String key, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        return novelMapper.searchNovels(key);
+    }
+
+    @Override
     public List<Novel> findNewNovels() {
         Example example = new Example(Novel.class);
         Example.Criteria criteria = example.createCriteria().andEqualTo("isDeleted", YesNo.NO.getCode());

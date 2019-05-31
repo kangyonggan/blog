@@ -28,6 +28,16 @@ public interface NovelService {
     List<NovelDto> searchNovels(String key);
 
     /**
+     * 搜索小说
+     *
+     * @param key
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    List<NovelDto> searchNovelsByPage(String key, Integer pageNum, Integer pageSize);
+
+    /**
      * 查找最新小说
      *
      * @return

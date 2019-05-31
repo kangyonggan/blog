@@ -67,7 +67,7 @@ public class NovelController extends BaseController {
     @ApiImplicitParam(name = "key", value = "搜索关键字", required = true, example = "逆天")
     public Response preSearch(String key) {
         Response response = successResponse();
-        List<NovelDto> novels = novelService.searchNovels(key);
+        List<NovelDto> novels = novelService.searchNovelsByPage(key, 1, 13);
 
         response.put("preList", novels);
         return response;

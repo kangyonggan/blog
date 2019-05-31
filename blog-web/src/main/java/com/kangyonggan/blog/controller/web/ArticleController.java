@@ -59,7 +59,7 @@ public class ArticleController extends BaseController {
     @ApiImplicitParam(name = "key", value = "搜索关键字", required = true, example = "java")
     public Response preSearch(String key) {
         Response response = successResponse();
-        List<Article> articles = articleService.searchArticles(1, 15, key);
+        List<Article> articles = articleService.searchArticles(1, 13, key);
 
         response.put("preList", Collections3.extractToList(articles, "title"));
         return response;
