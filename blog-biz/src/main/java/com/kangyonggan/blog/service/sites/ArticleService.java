@@ -1,5 +1,6 @@
 package com.kangyonggan.blog.service.sites;
 
+import com.kangyonggan.blog.dto.ArticleRequest;
 import com.kangyonggan.blog.model.Article;
 
 import java.util.List;
@@ -9,6 +10,13 @@ import java.util.List;
  * @since 2019-05-08
  */
 public interface ArticleService {
+    /**
+     * 搜索文章
+     *
+     * @param articleRequest
+     * @return
+     */
+    List<Article> searchArticles(ArticleRequest articleRequest);
     /**
      * 搜索文章
      *
@@ -40,4 +48,12 @@ public interface ArticleService {
      * @param article
      */
     void updateArticle(Article article);
+
+    /**
+     * 保存文章
+     *
+     * @param article
+     */
+    void saveArticle(Article article);
+
 }

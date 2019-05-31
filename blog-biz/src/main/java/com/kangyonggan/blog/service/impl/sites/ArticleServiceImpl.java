@@ -3,6 +3,7 @@ package com.kangyonggan.blog.service.impl.sites;
 import com.github.pagehelper.PageHelper;
 import com.kangyonggan.blog.annotation.MethodLog;
 import com.kangyonggan.blog.constants.YesNo;
+import com.kangyonggan.blog.dto.ArticleRequest;
 import com.kangyonggan.blog.model.Article;
 import com.kangyonggan.blog.service.BaseService;
 import com.kangyonggan.blog.service.sites.ArticleService;
@@ -19,6 +20,37 @@ import java.util.List;
  */
 @Service
 public class ArticleServiceImpl extends BaseService<Article> implements ArticleService {
+
+    @Override
+    @MethodLog
+    public List<Article> searchArticles(ArticleRequest articleRequest) {
+        Example example = new Example(Article.class);
+        Example.Criteria criteria = example.createCriteria();
+
+        String title = articleRequest.getTitle();
+        if (StringUtils.isNotEmpty(title)) {
+            criteria.andLike("title", StringUtil.toLike(title));
+        }
+
+        String[] createdTime = articleRequest.getCreatedTime();
+        if (createdTime != null && StringUtils.isNotEmpty(createdTime[0])) {
+            criteria.andGreaterThanOrEqualTo("createdTime", createdTime[0]);
+            criteria.andLessThanOrEqualTo("createdTime", createdTime[1]);
+        }
+
+        if (StringUtils.isNotEmpty(articleRequest.getSort())) {
+            if (articleRequest.getOrder() == 0) {
+                example.orderBy(articleRequest.getSort()).asc();
+            } else {
+                example.orderBy(articleRequest.getSort()).desc();
+            }
+        } else {
+            example.orderBy("articleId").desc();
+        }
+
+        PageHelper.startPage(articleRequest.getPageNum(), articleRequest.getPageSize());
+        return myMapper.selectByExample(example);
+    }
 
     @Override
     @MethodLog
@@ -59,5 +91,11 @@ public class ArticleServiceImpl extends BaseService<Article> implements ArticleS
     @MethodLog
     public void updateArticle(Article article) {
         myMapper.updateByPrimaryKeySelective(article);
+    }
+
+    @Override
+    @MethodLog
+    public void saveArticle(Article article) {
+        myMapper.insertSelective(article);
     }
 }
