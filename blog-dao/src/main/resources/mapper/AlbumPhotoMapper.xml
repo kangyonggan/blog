@@ -15,4 +15,13 @@
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
     </resultMap>
+
+    <insert id="insertAlbumPhotos">
+        insert into tb_album_photo
+        (album_id, description, url, thumb, sort)
+        values
+        <foreach collection="photos" item="photo" separator="," index="index">
+            (#{albumId}, '', #{photo.origin}, #{photo.thumb}, #{index})
+        </foreach>
+    </insert>
 </mapper>

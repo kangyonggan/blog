@@ -17,4 +17,19 @@ public interface AlbumPhotoService {
      * @return
      */
     List<AlbumPhoto> findAlbumPhotos(Long albumId);
+
+    /**
+     * 删除相册
+     *
+     * @param albumId
+     */
+    void deletePhotosByAlbumId(Long albumId);
+
+    /**
+     * 保存相册
+     *
+     * @param albumId
+     * @param photos
+     */
+    void saveAlbumPhotos(Long albumId, String[] photos);
 }
