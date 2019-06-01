@@ -47,7 +47,7 @@ public class ApiUploadController extends BaseController {
             originFileName += "." + FilenameUtils.getExtension(file.getOriginalFilename());
             Images.thumb(fileHelper.getFileUploadPath() + "photo/" + originFileName, fileHelper.getFileUploadPath() + "photo/thumb/" + thumbFileName, 195, 133);
 
-            response.put("originFileName", "photo/" + originFileName);
+            response.put("originFileName", "upload/photo/" + originFileName);
         } catch (Exception e) {
             response.failure(e.getMessage());
             log.error("相册图片上传失败", e);
