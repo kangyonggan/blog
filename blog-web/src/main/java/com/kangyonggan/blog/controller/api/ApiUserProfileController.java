@@ -70,7 +70,7 @@ public class ApiUserProfileController extends BaseController {
         // 更新用户信息
         UserProfile userProfile = new UserProfile();
         userProfile.setUserId(currentUserId());
-        userProfile.setAvatar("avatar/" + fileName + "." + ext);
+        userProfile.setAvatar("upload/avatar/" + fileName + "." + ext);
         userProfileService.updateUserProfile(userProfile);
 
         response.put("user", userService.findUserDtoById(currentUserId()));
