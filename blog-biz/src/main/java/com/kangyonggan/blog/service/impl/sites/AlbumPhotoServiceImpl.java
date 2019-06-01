@@ -61,7 +61,7 @@ public class AlbumPhotoServiceImpl extends BaseService<AlbumPhoto> implements Al
             String photo = photos[i];
             Properties prop = new Properties();
             prop.setProperty("origin", photo);
-            prop.setProperty("thumb", "photo/thumb" + photo.substring(5, photo.indexOf(".")) + "_THUMB.png");
+            prop.setProperty("thumb", "upload/photo/thumb" + photo.substring(5, photo.indexOf(".")) + "_THUMB.png");
             list.add(prop);
         }
 
