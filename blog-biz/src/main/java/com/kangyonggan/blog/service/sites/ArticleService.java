@@ -28,6 +28,14 @@ public interface ArticleService {
     List<Article> searchArticles(Integer pageNum, Integer pageSize, String key);
 
     /**
+     * 预搜索
+     *
+     * @param key
+     * @return
+     */
+    List<Article> preSearchArticles(String key);
+
+    /**
      * 大家都在看
      *
      * @return
@@ -55,5 +63,4 @@ public interface ArticleService {
      * @param article
      */
     void saveArticle(Article article);
-
 }

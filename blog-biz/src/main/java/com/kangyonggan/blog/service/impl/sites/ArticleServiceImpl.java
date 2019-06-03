@@ -70,6 +70,21 @@ public class ArticleServiceImpl extends BaseService<Article> implements ArticleS
 
     @Override
     @MethodLog
+    public List<Article> preSearchArticles(String key) {
+        Example example = new Example(Article.class);
+        Example.Criteria criteria = example.createCriteria().andEqualTo("isDeleted", YesNo.NO.getCode());
+        if (StringUtils.isNotEmpty(key)) {
+            criteria.andLike("title", StringUtil.toLike(key));
+        }
+
+        example.selectProperties("articleId", "title");
+        example.orderBy("createdTime").desc();
+        PageHelper.startPage(1, 13);
+        return myMapper.selectByExample(example);
+    }
+
+    @Override
+    @MethodLog
     public List<Article> findViewArticles() {
         Example example = new Example(Article.class);
         example.createCriteria().andEqualTo("isDeleted", YesNo.NO.getCode());

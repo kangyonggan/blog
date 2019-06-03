@@ -91,7 +91,7 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
     @Override
     public List<Novel> findNewNovels() {
         Example example = new Example(Novel.class);
-        Example.Criteria criteria = example.createCriteria().andEqualTo("isDeleted", YesNo.NO.getCode());
+        example.createCriteria().andEqualTo("isDeleted", YesNo.NO.getCode());
 
         example.selectProperties("novelId", "name", "author", "summary", "cover", "updatedTime");
         example.orderBy("novelId").desc();
