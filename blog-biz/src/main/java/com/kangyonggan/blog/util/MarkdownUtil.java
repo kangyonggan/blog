@@ -31,8 +31,8 @@ public final class MarkdownUtil {
             String line = lines[i];
             // 判断目录级别
             if (line.startsWith("## ")) {
-                String link = line.substring(3);
-                String name = (docs.size() + 1) + ". " + link;
+                String name = (docs.size() + 1) + ". " + line.substring(3);
+                String link = line.substring(3).replaceAll("\\.", "");
                 childrenOne = new ArrayList<>();
 
                 Map<String, Object> header = new HashMap<>(8);
@@ -44,8 +44,8 @@ public final class MarkdownUtil {
                 if (childrenOne == null) {
                     continue;
                 }
-                String link = line.substring(4);
-                String name = docs.size() + "." + (childrenOne.size() + 1) + ". " + link;
+                String name = docs.size() + "." + (childrenOne.size() + 1) + ". " + line.substring(4);
+                String link = line.substring(4).replaceAll("\\.", "");
                 childrenTwo = new ArrayList<>();
 
                 Map<String, Object> header = new HashMap<>(8);
@@ -57,8 +57,8 @@ public final class MarkdownUtil {
                 if (childrenTwo == null) {
                     continue;
                 }
-                String link = line.substring(5);
-                String name = docs.size() + "." + childrenOne.size() + "." + (childrenTwo.size() + 1) + ". " + link;
+                String name = docs.size() + "." + childrenOne.size() + "." + (childrenTwo.size() + 1) + ". " + line.substring(5);
+                String link = line.substring(5).replaceAll("\\.", "");
 
                 Map<String, Object> header = new HashMap<>(8);
                 header.put("name", name);
