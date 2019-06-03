@@ -7,6 +7,7 @@ import com.kangyonggan.blog.dto.SearchRequest;
 import com.kangyonggan.blog.model.Article;
 import com.kangyonggan.blog.service.sites.ArticleService;
 import com.kangyonggan.blog.util.Collections3;
+import com.kangyonggan.blog.util.MarkdownUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -100,6 +101,7 @@ public class ArticleController extends BaseController {
         articleService.updateArticle(article);
 
         response.put("article", article);
+        response.put("tocs", MarkdownUtil.genTocs(article.getContent()));
         return response;
     }
 }
