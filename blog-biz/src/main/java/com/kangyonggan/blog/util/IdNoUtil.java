@@ -179,8 +179,6 @@ public final class IdNoUtil {
      * @return
      */
     public static boolean isIdCard18(String idCard) {
-        String[] res = new String[2];
-
         if (idCard == null || idCard.length() != CHINA_ID_MAX_LENGTH) {
             return false;
         }
@@ -251,6 +249,46 @@ public final class IdNoUtil {
      */
     private static String getCheckCode18(int iSum) {
         return VERIFY_CODE[iSum % 11];
+    }
+
+    /**
+     * 根据身份号获取出生日期年
+     *
+     * @param idCard 身份证号
+     * @return 年(yyyy)
+     */
+    public static String getYearFromIdCard(String idCard) {
+        return 18 == idCard.length() ? idCard.substring(6, 10) : "19" + idCard.substring(6, 8);
+    }
+
+    /**
+     * 根据身份号获取出生日期月
+     *
+     * @param idCard 身份证号
+     * @return 月(MM)
+     */
+    public static String getMonthFromIdCard(String idCard) {
+        return 18 == idCard.length() ? idCard.substring(10, 12) : idCard.substring(8, 10);
+    }
+
+    /**
+     * 根据身份号获取出生日期日
+     *
+     * @param idCard 身份证号
+     * @return 日(dd)
+     */
+    public static String getDayFromIdCard(String idCard) {
+        return 18 == idCard.length() ? idCard.substring(12, 14) : idCard.substring(10, 12);
+    }
+
+    /**
+     * 根据身份号获取性别
+     *
+     * @param idCard 身份证号
+     * @return 性别{0:男, 1:女}
+     */
+    public static int getSexFromIdCard(String idCard) {
+        return ((18 == idCard.length() ? idCard.charAt(16) : idCard.charAt(14)) + 1) % 2;
     }
 }
 
