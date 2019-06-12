@@ -76,7 +76,7 @@ public class ToolsController extends BaseController {
         idNo = idNo.replaceAll("x", "X");
 
         boolean isIdNo15 = IdNoUtil.isIdCard15(idNo);
-        if (!isIdNo15) {
+        if (isIdNo15) {
             idNo = IdNoUtil.convert15To18(idNo);
         }
 
