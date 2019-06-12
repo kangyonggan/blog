@@ -17,8 +17,8 @@ public class IdNoDto extends Request {
 
     private String sex;
 
-    private Integer len = -1;
+    private Integer len = 18;
 
-    private Integer size = 20;
+    private Integer size = 32;
 
 }
