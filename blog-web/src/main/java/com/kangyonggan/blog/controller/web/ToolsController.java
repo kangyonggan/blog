@@ -80,6 +80,8 @@ public class ToolsController extends BaseController {
             idNo = IdNoUtil.convert15To18(idNo);
         }
 
+        // 身份证号码(18位)
+        response.put("idNo", idNo);
         // 原户籍地
         response.put("address", IdNoConstants.getArea(idNo.substring(0, 6)));
         // 出生年月
