@@ -1,9 +1,12 @@
 package com.kangyonggan.blog.util;
 
+import com.kangyonggan.blog.dto.IdNoDto;
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 
 /**
  * 身份证工具类
@@ -289,6 +292,138 @@ public final class IdNoUtil {
      */
     public static int getSexFromIdCard(String idCard) {
         return ((18 == idCard.length() ? idCard.charAt(16) : idCard.charAt(14)) + 1) % 2;
+    }
+
+    /**
+     * 生成身份证
+     *
+     * @param idNoDto
+     * @return
+     */
+    public static List<String> genIdCard(IdNoDto idNoDto) {
+        List<String> list = new ArrayList();
+        for (int i = 0; i < idNoDto.getSize(); i++) {
+            list.add(genIdCard(idNoDto.getProv(), idNoDto.getStartAge(), idNoDto.getEndAge(), idNoDto.getSex(), idNoDto.getLen()));
+        }
+        return list;
+    }
+    /**
+     * 生成身份证
+     *
+     * @param prov
+     * @param startAge
+     * @param endAge
+     * @param sex
+     * @param len
+     * @return
+     */
+    private static String genIdCard(String prov, int startAge, int endAge, String sex, int len) {
+        StringBuilder sb = new StringBuilder();
+
+        // 根据省份码，随机获取一个6位地区码
+        sb.append(IdNoConstants.getRandomAreaCode(prov));
+        // 获取年
+        int year = genRandomAge(startAge, endAge);
+        sb.append(year);
+        // 获取月
+        String month = genRandomMonth();
+        sb.append(month);
+        // 获取日
+        sb.append(genRandomDay(year, month));
+        // 两位随机数
+        sb.append(genRandomNum()).append(genRandomNum());
+        // 性别
+        sb.append(genSexNum(sex));
+        // 计算检验码
+        int iSum = getPowerSum(sb.toString());
+        String checkCode = getCheckCode18(iSum);
+        sb.append(checkCode);
+
+        String idcard = sb.toString();
+        if (len == 15) {
+            idcard = convert18To15(idcard);
+        } else if (len == -1) {
+            Random random = new Random();
+            if (random.nextInt(100) % 2 == 0) {
+                idcard = convert18To15(idcard);
+            }
+        }
+        return idcard;
+    }
+
+    private static int genRandomAge(int startAge, int endAge) {
+        if (endAge < startAge) {
+            int temp = startAge;
+            startAge = endAge;
+            endAge = temp;
+        }
+
+        int nowYear = LocalDate.now().getYear();
+        int startYear = nowYear - endAge;
+        int endYear = nowYear - startAge;
+
+        if (startYear == endYear) {
+            return startYear;
+        } else {
+            Random random = new Random();
+            int rand = random.nextInt(endYear - startYear);
+            return startYear + rand;
+        }
+    }
+
+    private static String genRandomMonth() {
+        Random random = new Random();
+        int rand = random.nextInt(12) % 12 + 1;
+
+        return rand < 10 ? "0" + rand : String.valueOf(rand);
+    }
+
+    private static String genRandomDay(int year, String month) {
+        int allDays = 31;
+        if ("2".equals(month)) {
+            if (isLeapYear(year)) {
+                allDays = 29;
+            } else {
+                allDays = 28;
+            }
+        } else if ("4,6,9,11".indexOf(month) > -1) {
+            allDays = 30;
+        }
+
+        Random random = new Random();
+        int day = random.nextInt(allDays) % allDays + 1;
+        return day < 10 ? "0" + day : String.valueOf(day);
+    }
+
+    private static boolean isLeapYear(int year) {
+        if (year % 400 == 0) {
+            return true;
+        } else if (year % 100 == 0) {
+            return false;
+        } else if (year % 4 == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private static String genRandomNum() {
+        Random random = new Random();
+        return String.valueOf(random.nextInt(10));
+    }
+
+    private static String genSexNum(String sex) {
+        Random random = new Random();
+
+        int[] boys = {1, 3, 5, 7, 9};
+        int[] girls = {0, 2, 4, 6, 8};
+
+        if (StringUtils.isEmpty(sex)) {
+            return genRandomNum();
+        } else if ("0".equals(sex)) {
+            return String.valueOf(boys[random.nextInt(5)]);
+        } else {
+            return String.valueOf(girls[random.nextInt(5)]);
+        }
     }
 }
 

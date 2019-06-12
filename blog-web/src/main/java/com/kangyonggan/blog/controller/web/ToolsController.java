@@ -3,6 +3,7 @@ package com.kangyonggan.blog.controller.web;
 import com.kangyonggan.blog.annotation.Secret;
 import com.kangyonggan.blog.constants.DictType;
 import com.kangyonggan.blog.controller.BaseController;
+import com.kangyonggan.blog.dto.IdNoDto;
 import com.kangyonggan.blog.dto.Response;
 import com.kangyonggan.blog.model.Dict;
 import com.kangyonggan.blog.service.system.DictService;
@@ -127,4 +128,18 @@ public class ToolsController extends BaseController {
         return response;
     }
 
+    /**
+     * 生成身份证
+     *
+     * @param idNoDto
+     * @return
+     */
+    @PostMapping("idNoGen")
+    public Response idNoGen(IdNoDto idNoDto) {
+        Response response = successResponse();
+        List<String> idNos = IdNoUtil.genIdCard(idNoDto);
+
+        response.put("idNos", idNos);
+        return response;
+    }
 }

@@ -129,11 +129,11 @@ public class ApiValidateController extends BaseController {
      * @return
      */
     @PostMapping("idNo")
-    @PermissionLogin
     @ApiOperation("校验证件号码是否合法")
     @ApiImplicitParam(name = "idNo", value = "证件号码", required = true, example = "340321199103173095")
     public Response idNo(String idNo) {
         Response response = successResponse();
+        idNo = idNo.replaceAll("x", "X");
 
         if (!IdNoUtil.isIdCard(idNo)) {
             response.failure("身份证号码不合法");

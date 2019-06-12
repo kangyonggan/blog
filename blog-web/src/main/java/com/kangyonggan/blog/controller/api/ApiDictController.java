@@ -1,7 +1,5 @@
 package com.kangyonggan.blog.controller.api;
 
-import com.kangyonggan.blog.annotation.PermissionLogin;
-import com.kangyonggan.blog.constants.EnumUtil;
 import com.kangyonggan.blog.controller.BaseController;
 import com.kangyonggan.blog.dto.Response;
 import com.kangyonggan.blog.service.system.DictService;
@@ -32,7 +30,6 @@ public class ApiDictController extends BaseController {
      * @return
      */
     @PostMapping
-    @PermissionLogin
     @ApiOperation("查询字典列表")
     @ApiImplicitParam(name = "dictType", value = "字典类型", required = true, example = "ID_TYPE")
     public Response dicts(String dictType) {

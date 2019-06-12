@@ -1,6 +1,5 @@
 package com.kangyonggan.blog.controller.api;
 
-import com.kangyonggan.blog.annotation.PermissionLogin;
 import com.kangyonggan.blog.constants.EnumUtil;
 import com.kangyonggan.blog.controller.BaseController;
 import com.kangyonggan.blog.dto.Response;
@@ -27,7 +26,6 @@ public class ApiEnumController extends BaseController {
      * @return
      */
     @PostMapping
-    @PermissionLogin
     @ApiOperation("查询枚举列表")
     @ApiImplicitParam(name = "enumKey", value = "枚举的键", required = true, example = "DictType")
     public Response enumList(String enumKey) {
