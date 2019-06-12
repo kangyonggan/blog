@@ -20,7 +20,12 @@ public enum DictType {
     /**
      * 导航
      */
-    NAV("NAV", "导航");
+    NAV("NAV", "导航"),
+
+    /**
+     * 字体
+     */
+    FONT("FONT", "字体");
 
     /**
      * 类型代码

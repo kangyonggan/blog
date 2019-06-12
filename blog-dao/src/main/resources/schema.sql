@@ -475,7 +475,13 @@ VALUES ('ID_TYPE', '0', '身份证', 0),
        ('NAV', '/album', '相册', 3),
        ('NAV', '/video', '视频', 4),
        ('NAV', '/tools', '工具', 5),
-       ('NAV', '/game', '游戏', 6);
+       ('NAV', '/game', '游戏', 6),
+       ('FONT', '0', '行书', 0),
+       ('FONT', '1', '印品篆遇简', 1),
+       ('FONT', '2', '毛泽东字体', 2),
+       ('FONT', '3', '繁篆书', 3),
+       ('FONT', '4', '幼圆', 4),
+       ('FONT', '5', '华文行楷', 5);
 
 INSERT INTO tb_novel
   (source, code, name, author, cover, summary)

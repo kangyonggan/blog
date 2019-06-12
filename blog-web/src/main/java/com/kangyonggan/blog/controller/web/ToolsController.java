@@ -1,10 +1,12 @@
 package com.kangyonggan.blog.controller.web;
 
 import com.kangyonggan.blog.annotation.Secret;
+import com.kangyonggan.blog.constants.DictType;
 import com.kangyonggan.blog.controller.BaseController;
 import com.kangyonggan.blog.dto.Response;
+import com.kangyonggan.blog.model.Dict;
+import com.kangyonggan.blog.service.system.DictService;
 import com.kangyonggan.blog.util.*;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author kangyonggan
@@ -26,6 +31,9 @@ public class ToolsController extends BaseController {
     @Autowired
     private FileHelper fileHelper;
 
+    @Autowired
+    private DictService dictService;
+
     /**
      * 生成缩略图
      *
@@ -36,7 +44,6 @@ public class ToolsController extends BaseController {
      * @throws Exception
      */
     @PostMapping("thumb")
-    @ApiOperation("生成缩略图")
     @Secret(enable = false)
     public Response thumb(MultipartFile file, @RequestParam(name = "width", defaultValue = "400") Integer width, @RequestParam(value = "height", defaultValue = "300") int height) throws Exception {
         Response response = successResponse();
@@ -70,7 +77,6 @@ public class ToolsController extends BaseController {
      * @return
      */
     @PostMapping("idNoQry")
-    @ApiOperation("生成缩略图")
     public Response idNoQry(@RequestParam("idNo") String idNo) {
         Response response = successResponse();
         idNo = idNo.replaceAll("x", "X");
@@ -93,6 +99,31 @@ public class ToolsController extends BaseController {
         // 性别
         response.put("gender", IdNoUtil.getSexFromIdCard(idNo));
 
+        return response;
+    }
+
+    /**
+     * 生成电子印章
+     *
+     * @param name
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("seal")
+    public Response seal(@RequestParam("name") String name) throws Exception {
+        Response response = successResponse();
+        List<Dict> dicts = dictService.findDictsByDictType(DictType.FONT.getCode());
+        List<String[]> result = new ArrayList<>();
+        for (Dict dict : dicts) {
+            String[] arr = new String[2];
+            String fileName = fileHelper.genFileName("seal") + ".png";
+            SealUtil.build(name, dict.getValue(), fileHelper.getFileUploadPath() + "seal/" + fileName);
+            arr[0] = "upload/seal/" + fileName;
+            arr[1] = dict.getValue();
+            result.add(arr);
+        }
+
+        response.put("result", result);
         return response;
     }
 
