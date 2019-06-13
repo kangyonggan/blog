@@ -139,7 +139,7 @@ public class WxServiceImpl implements WxService {
             respXml = buildTextMsg(requestDto, "湿垃圾");
         } else {
             // 菜单
-            respXml = getMenus();
+            respXml = buildTextMsg(requestDto, getMenus());
         }
 
         return respXml;
