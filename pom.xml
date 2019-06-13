@@ -66,6 +66,7 @@
         <fastjson.version>1.2.8</fastjson.version>
         <jackson-dataformat-yaml.version>2.9.8</jackson-dataformat-yaml.version>
         <jsoup.version>1.11.3</jsoup.version>
+        <pegdown.version>1.6.0</pegdown.version>
     </properties>
 
     <build>
@@ -242,7 +243,11 @@
                 <artifactId>jsoup</artifactId>
                 <version>${jsoup.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.pegdown</groupId>
+                <artifactId>pegdown</artifactId>
+                <version>${pegdown.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

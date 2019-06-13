@@ -17,6 +17,7 @@ public interface ArticleService {
      * @return
      */
     List<Article> searchArticles(ArticleRequest articleRequest);
+
     /**
      * 搜索文章
      *
@@ -63,4 +64,11 @@ public interface ArticleService {
      * @param article
      */
     void saveArticle(Article article);
+
+    /**
+     * 生成rss
+     *
+     * @throws Exception
+     */
+    void genRss() throws Exception;
 }
