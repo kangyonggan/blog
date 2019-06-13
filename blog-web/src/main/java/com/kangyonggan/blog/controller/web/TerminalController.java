@@ -27,7 +27,7 @@ public class TerminalController extends BaseController {
      * @return
      * @throws Exception
      */
-    @GetMapping
+    @GetMapping("genRss")
     public Response genRss() throws Exception {
         articleService.genRss();
         return successResponse();
