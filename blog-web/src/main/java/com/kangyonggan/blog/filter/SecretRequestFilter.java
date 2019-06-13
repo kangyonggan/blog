@@ -24,7 +24,7 @@ public class SecretRequestFilter extends OncePerRequestFilter {
     @Value("${app.aes-iv}")
     private String aesIv;
 
-    @Value("${app.aes.white-list}")
+    @Value("${app.aes-white-list}")
     private String aesWhiteList;
 
     @Override
