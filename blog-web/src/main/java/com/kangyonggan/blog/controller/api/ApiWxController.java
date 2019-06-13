@@ -1,5 +1,6 @@
 package com.kangyonggan.blog.controller.api;
 
+import com.kangyonggan.blog.annotation.Secret;
 import com.kangyonggan.blog.dto.AutoReplyRequestDto;
 import com.kangyonggan.blog.service.api.WxService;
 import com.kangyonggan.blog.util.IoUtil;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("api/wx")
 @Log4j2
+@Secret(enable = false)
 public class ApiWxController {
 
     @Autowired

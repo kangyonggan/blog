@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.kangyonggan.blog.constants.AppConstants;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
@@ -41,7 +42,7 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
 
     private JSONObject params;
 
-    public SecretRequestWrapper(HttpServletRequest request, String aesKey, String aesIv) throws IOException {
+    public SecretRequestWrapper(HttpServletRequest request, String aesKey, String aesIv, String aesWhiteList) throws IOException {
         super(request);
         this.aesKey = aesKey;
         this.aesIv = aesIv;
@@ -51,6 +52,10 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
         // 把原始参数放入最终参数中
         this.parameterMap.putAll(request.getParameterMap());
 
+        if (inWhiteList(request, aesWhiteList)) {
+            return;
+        }
+
         // 把body中的json参数放入最终参数中
         JSONObject jsonObject = getAttrs();
         for (String key : jsonObject.keySet()) {
@@ -59,7 +64,7 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
     }
 
     @Override
-    public BufferedReader getReader() throws IOException {
+    public BufferedReader getReader() {
         return new BufferedReader(new InputStreamReader(getInputStream()));
     }
 
@@ -81,7 +86,7 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
     }
 
     @Override
-    public ServletInputStream getInputStream() throws IOException {
+    public ServletInputStream getInputStream() {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(body);
 
         return new ServletInputStream() {
@@ -187,6 +192,22 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public String[] getParameterValues(String name) {
         return parameterMap.get(name);
+    }
+
+    private boolean inWhiteList(HttpServletRequest request, String aesWhiteList) {
+        if (StringUtils.isEmpty(aesWhiteList)) {
+            return false;
+        }
+
+        String url = request.getRequestURI();
+        String[] whiteList = aesWhiteList.split(",");
+        for (String item : whiteList) {
+            if (url.startsWith(item.trim())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 

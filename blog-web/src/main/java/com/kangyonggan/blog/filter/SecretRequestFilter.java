@@ -24,12 +24,15 @@ public class SecretRequestFilter extends OncePerRequestFilter {
     @Value("${app.aes-iv}")
     private String aesIv;
 
+    @Value("${app.aes.white-list}")
+    private String aesWhiteList;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 跨域
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Headers", "*");
-        filterChain.doFilter(new SecretRequestWrapper(request, aesKey, aesIv), response);
+        filterChain.doFilter(new SecretRequestWrapper(request, aesKey, aesIv, aesWhiteList), response);
     }
 
 }
