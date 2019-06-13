@@ -9,8 +9,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -126,7 +124,6 @@ public class WxServiceImpl implements WxService {
      * @return
      */
     @Override
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public String getResponseXml(AutoReplyRequestDto requestDto) {
         if (!"text".equals(requestDto.getMsgType())) {
             return buildTextMsg(requestDto, "我暂时只能看懂文字，更强大的功能正在开发，敬请期待吧！");
