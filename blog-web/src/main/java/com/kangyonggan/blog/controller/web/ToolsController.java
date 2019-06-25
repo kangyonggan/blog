@@ -65,7 +65,7 @@ public class ToolsController extends BaseController {
 
         // 缩略图
         String thumbFileName = fileName + "_THUMB.png";
-        fileName += "." + FilenameUtils.getExtension(file.getOriginalFilename());
+        fileName += "." + ext;
         Images.thumb(fileHelper.getFileUploadPath() + "temp/" + fileName, fileHelper.getFileUploadPath() + "temp/" + thumbFileName, width, height);
 
         response.put("thumb", "upload/temp/" + thumbFileName);
