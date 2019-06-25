@@ -170,7 +170,7 @@ public class ToolsController extends BaseController {
         FileUpload.upload(fileHelper.getFileUploadPath() + "temp/", fileName, file);
 
         // 解析
-        Map<String, Object> resultMap = Images.parseImg(fileHelper.getFileUploadPath() + "temp/" + fileName);
+        Map<String, Object> resultMap = Images.parseImg(fileHelper.getFileUploadPath() + "temp/" + fileName + "." + ext);
 
         response.put("resultMap", resultMap);
         return response;
