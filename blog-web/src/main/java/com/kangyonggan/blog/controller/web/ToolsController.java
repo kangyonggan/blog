@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author kangyonggan
@@ -140,6 +141,38 @@ public class ToolsController extends BaseController {
         List<String> idNos = IdNoUtil.genIdCard(idNoDto);
 
         response.put("idNos", idNos);
+        return response;
+    }
+
+    /**
+     * 图片解析
+     *
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("parseImg")
+    @Secret(enable = false)
+    public Response parseImg(MultipartFile file) throws Exception {
+        Response response = successResponse();
+
+        if (file == null || file.isEmpty()) {
+            return response.failure("图片内容为空！");
+        }
+        // 文件类型校验
+        String ext = FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();
+        if (!"jpg,jpeg,png".contains(ext)) {
+            return response.failure("请选择jpg、jpeg或者png格式的图片");
+        }
+
+        // 上传到本地
+        String fileName = fileHelper.genFileName("temp");
+        FileUpload.upload(fileHelper.getFileUploadPath() + "temp/", fileName, file);
+
+        // 解析
+        Map<String, Object> resultMap = Images.parseImg(fileHelper.getFileUploadPath() + "temp/" + fileName);
+
+        response.put("resultMap", resultMap);
         return response;
     }
 }

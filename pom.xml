@@ -68,6 +68,7 @@
         <jsoup.version>1.11.3</jsoup.version>
         <pegdown.version>1.6.0</pegdown.version>
         <dom4j.version>1.6.1</dom4j.version>
+        <metadata-extractor.version>2.8.1</metadata-extractor.version>
     </properties>
 
     <build>
@@ -253,6 +254,11 @@
                 <groupId>dom4j</groupId>
                 <artifactId>dom4j</artifactId>
                 <version>${dom4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.drewnoakes</groupId>
+                <artifactId>metadata-extractor</artifactId>
+                <version>${metadata-extractor.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
