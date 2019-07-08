@@ -3,6 +3,7 @@ package com.kangyonggan.blog.controller.web;
 import com.kangyonggan.blog.annotation.Secret;
 import com.kangyonggan.blog.constants.DictType;
 import com.kangyonggan.blog.controller.BaseController;
+import com.kangyonggan.blog.dto.BaZiDto;
 import com.kangyonggan.blog.dto.IdNoDto;
 import com.kangyonggan.blog.dto.Response;
 import com.kangyonggan.blog.model.Dict;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -173,6 +176,40 @@ public class ToolsController extends BaseController {
         Map<String, Object> resultMap = Images.parseImg(fileHelper.getFileUploadPath() + "temp/" + fileName + "." + ext);
 
         response.put("resultMap", resultMap);
+        return response;
+    }
+
+    /**
+     * 五行、八字
+     *
+     * @param baZiDto
+     * @return
+     */
+    @PostMapping("bazi")
+    public Response bazi(BaZiDto baZiDto) throws Exception {
+        Response response = successResponse();
+
+        if (baZiDto.getIsLunar()) {
+            // 阴历转阳历
+            String date = CalendarUtil.lunarToSolar(LocalDate.of(baZiDto.getYear(), baZiDto.getMonth(), baZiDto.getMonth()).format(DateTimeFormatter.BASIC_ISO_DATE));
+            baZiDto.setYear(Integer.parseInt(date.substring(0, 4)));
+            baZiDto.setMonth(Integer.parseInt(date.substring(4, 6)));
+            baZiDto.setDay(Integer.parseInt(date.substring(6, 8)));
+        }
+
+        String baZi = DestinyUtil.getEightWord(baZiDto.getYear(), baZiDto.getMonth(), baZiDto.getDay(), baZiDto.getHour());
+        response.put("baZi", baZi);
+        response.put("shengXiao", DestinyUtil.getShengXiao(baZiDto.getYear()));
+        response.put("xingZuo", DestinyUtil.getXingZuo(baZiDto.getMonth(), baZiDto.getDay()));
+
+        String wuXing = DestinyUtil.getWuXing(baZi);
+        response.put("wuXing", wuXing);
+        response.put("que", DestinyUtil.wuxing(wuXing));
+
+        String riGan = DestinyUtil.getDayColumn(baZiDto.getYear(), baZiDto.getMonth(), baZiDto.getDay()).substring(0, 1);
+        String wuXingOfRiGan = DestinyUtil.getTianGanWuXing(riGan);
+        response.put("yuShi", DestinyUtil.getYunShi(wuXingOfRiGan, baZiDto.getMonth()));
+
         return response;
     }
 }

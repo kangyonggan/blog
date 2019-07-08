@@ -53,9 +53,6 @@ public final class DestinyUtil {
             "水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座",
             "天蝎座", "射手座", "摩羯座"};
 
-    /**
-     * 12属相
-     */
     private final static String[] SHU_XIANG = {"鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"};
 
     private DestinyUtil() {
@@ -246,36 +243,36 @@ public final class DestinyUtil {
      * @return
      */
     public static String getTianGanWuXing(String tianGan) {
-        if ("甲乙".indexOf(tianGan) > -1) {
+        if ("甲乙".contains(tianGan)) {
             return "木";
-        } else if ("丙丁".indexOf(tianGan) > -1) {
+        } else if ("丙丁".contains(tianGan)) {
             return "火";
-        } else if ("戊己".indexOf(tianGan) > -1) {
+        } else if ("戊己".contains(tianGan)) {
             return "土";
-        } else if ("庚辛".indexOf(tianGan) > -1) {
+        } else if ("庚辛".contains(tianGan)) {
             return "金";
-        } else if ("壬癸".indexOf(tianGan) > -1) {
+        } else if ("壬癸".contains(tianGan)) {
             return "水";
         }
         return tianGan;
     }
 
     /**
-     * 获取地址对应的五行
+     * 获取地支对应的五行
      *
      * @param diZhi
      * @return
      */
     private static String getDiZhiWuXing(String diZhi) {
-        if ("寅卯".indexOf(diZhi) > -1) {
+        if ("寅卯".contains(diZhi)) {
             return "木";
-        } else if ("巳午".indexOf(diZhi) > -1) {
+        } else if ("巳午".contains(diZhi)) {
             return "火";
-        } else if ("辰丑戌未".indexOf(diZhi) > -1) {
+        } else if ("辰丑戌未".contains(diZhi)) {
             return "土";
-        } else if ("申酉".indexOf(diZhi) > -1) {
+        } else if ("申酉".contains(diZhi)) {
             return "金";
-        } else if ("亥子".indexOf(diZhi) > -1) {
+        } else if ("亥子".contains(diZhi)) {
             return "水";
         }
         return diZhi;
@@ -288,7 +285,7 @@ public final class DestinyUtil {
      * @return
      */
     public static String[] wuxing(String data) {
-        String[] result = new String[2];
+        String[] result = new String[3];
         String[] wuxing = {"金", "木", "水", "火", "土"};
 
         String[] que = new String[4];
@@ -299,7 +296,7 @@ public final class DestinyUtil {
         int qiangLen = 0;
         for (int i = 0; i < wuxing.length; i++) {
             // 统计缺五行
-            if (data.indexOf(wuxing[i]) == -1) {
+            if (!data.contains(wuxing[i])) {
                 que[queLen++] = wuxing[i];
             }
 
@@ -337,7 +334,7 @@ public final class DestinyUtil {
         if (qiangLen > 0) {
             StringBuilder buff = new StringBuilder();
             for (int i = 0; i < qiangLen; i++) {
-                buff.append(qiang[i]).append("\t");
+                buff.append(qiang[i]).append(" ");
             }
             result[2] = "强五行：" + buff.toString();
         }
