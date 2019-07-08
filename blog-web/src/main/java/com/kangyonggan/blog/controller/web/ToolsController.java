@@ -191,7 +191,7 @@ public class ToolsController extends BaseController {
 
         if (baZiDto.getIsLunar()) {
             // 阴历转阳历
-            String date = CalendarUtil.lunarToSolar(LocalDate.of(baZiDto.getYear(), baZiDto.getMonth(), baZiDto.getMonth()).format(DateTimeFormatter.BASIC_ISO_DATE));
+            String date = CalendarUtil.lunarToSolar(LocalDate.of(baZiDto.getYear(), baZiDto.getMonth(), baZiDto.getDay()).format(DateTimeFormatter.BASIC_ISO_DATE));
             baZiDto.setYear(Integer.parseInt(date.substring(0, 4)));
             baZiDto.setMonth(Integer.parseInt(date.substring(4, 6)));
             baZiDto.setDay(Integer.parseInt(date.substring(6, 8)));
