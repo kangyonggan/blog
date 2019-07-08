@@ -198,6 +198,7 @@ public class ToolsController extends BaseController {
         }
 
         String baZi = DestinyUtil.getEightWord(baZiDto.getYear(), baZiDto.getMonth(), baZiDto.getDay(), baZiDto.getHour());
+        response.put("birthday", baZiDto.getYear() + "年" + baZiDto.getMonth() + "月" + baZiDto.getDay() + "日");
         response.put("baZi", baZi);
         response.put("shengXiao", DestinyUtil.getShengXiao(baZiDto.getYear()));
         response.put("xingZuo", DestinyUtil.getXingZuo(baZiDto.getMonth(), baZiDto.getDay()));
