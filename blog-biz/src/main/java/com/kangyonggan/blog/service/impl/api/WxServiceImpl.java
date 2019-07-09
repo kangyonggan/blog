@@ -1,5 +1,6 @@
 package com.kangyonggan.blog.service.impl.api;
 
+import com.alibaba.fastjson.JSON;
 import com.kangyonggan.blog.dto.AutoReplyRequestDto;
 import com.kangyonggan.blog.dto.BaZiDto;
 import com.kangyonggan.blog.dto.IdNoDto;
@@ -182,13 +183,14 @@ public class WxServiceImpl implements WxService {
             String wuXing = DestinyUtil.getWuXing(baZi);
             String riGan = DestinyUtil.getDayColumn(baZiDto.getYear(), baZiDto.getMonth(), baZiDto.getDay()).substring(0, 1);
             String wuXingOfRiGan = DestinyUtil.getTianGanWuXing(riGan);
+            String[] ruo = DestinyUtil.wuxing(wuXing);
 
             String respMsg = "阳历生日：" + baZiDto.getYear() + "年" + baZiDto.getMonth() + "月" + baZiDto.getDay() + "日" + ENTER_CHAR;
             respMsg += "八　　字：" + baZi + ENTER_CHAR;
             respMsg += "五　　行：" + wuXing + ENTER_CHAR;
             respMsg += "生　　肖：" + DestinyUtil.getShengXiao(baZiDto.getYear()) + ENTER_CHAR;
             respMsg += "星　　座：" + DestinyUtil.getXingZuo(baZiDto.getMonth(), baZiDto.getDay()) + ENTER_CHAR;
-            respMsg += "五行强弱：" + DestinyUtil.wuxing(wuXing) + ENTER_CHAR;
+            respMsg += "五行强弱：" + JSON.toJSONString(ruo) + ENTER_CHAR;
             respMsg += "喜　　忌：" + DestinyUtil.getYunShi(wuXingOfRiGan, baZiDto.getMonth()) + ENTER_CHAR;
 
             respXml = buildTextMsg(requestDto, respMsg);
