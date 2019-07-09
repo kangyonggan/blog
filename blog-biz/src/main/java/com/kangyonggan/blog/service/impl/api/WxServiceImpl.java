@@ -134,7 +134,7 @@ public class WxServiceImpl implements WxService {
             respMsg += "出生年月：" + IdNoUtil.getYearFromIdCard(idNo) + "年" + IdNoUtil.getMonthFromIdCard(idNo) + "月" + IdNoUtil.getDayFromIdCard(idNo) + "日" + ENTER_CHAR;
             respMsg += "生肖：" + DestinyUtil.getShengXiao(Integer.parseInt(IdNoUtil.getYearFromIdCard(idNo))) + ENTER_CHAR;
             respMsg += "星座：" + DestinyUtil.getXingZuo(Integer.parseInt(IdNoUtil.getMonthFromIdCard(idNo)), Integer.parseInt(IdNoUtil.getDayFromIdCard(idNo))) + ENTER_CHAR;
-            respMsg += "性别：" + IdNoUtil.getSexFromIdCard(idNo) + ENTER_CHAR;
+            respMsg += "性别：" + (IdNoUtil.getSexFromIdCard(idNo) == 0 ? "男" : "女") + ENTER_CHAR;
 
             respXml = buildTextMsg(requestDto, respMsg);
         } else if ("2".equals(content)) {
