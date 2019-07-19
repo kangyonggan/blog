@@ -52,9 +52,15 @@ public class DynamicDataSourceAop {
             DynamicDataSource.setDataSource(dataSourceSwitch.value());
         }
 
-        Object result = joinPoint.proceed(joinPoint.getArgs());
+        Object result;
+        try {
+            result = joinPoint.proceed(joinPoint.getArgs());
+        } catch (Throwable throwable) {
+            throw new RuntimeException(throwable);
+        } finally {
+            DynamicDataSource.remove();
+        }
 
-        DynamicDataSource.remove();
         return result;
     }
 
