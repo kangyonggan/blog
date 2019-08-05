@@ -2,7 +2,17 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-    password: 123456
+    password: ENC[0aA8mVi2gr8/Cp9IDXK9dQ==]
+
+# 配置文件密码加密
+jasypt:
+  encryptor:
+    # 任意的随机字符串均可
+    password: 26fc57140a1073b62e5982ab6258e0f2
+    property:
+      # 自定义属性规则，默认前缀是“ENC(”，后缀为“)”
+      prefix: "ENC["
+      suffix: "]"
 
 app:
   version: @project.version@
