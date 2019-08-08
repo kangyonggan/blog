@@ -21,7 +21,7 @@ public final class XmlUtil {
     private XmlUtil() {
     }
 
-    private static final SAXReader reader = new SAXReader();
+    private static final SAXReader READER = new SAXReader();
 
     /**
      * xml格式化
@@ -59,15 +59,15 @@ public final class XmlUtil {
     }
 
     public static Document read(String filename) throws DocumentException {
-        return reader.read(new File(filename));
+        return READER.read(new File(filename));
     }
 
     public static Document read(File file) throws DocumentException {
-        return reader.read(file);
+        return READER.read(file);
     }
 
     public static Document read(URL url) throws DocumentException {
-        return reader.read(url);
+        return READER.read(url);
     }
 
     public static Document parseText(String xml) throws DocumentException {

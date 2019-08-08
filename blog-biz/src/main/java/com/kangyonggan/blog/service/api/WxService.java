@@ -23,6 +23,7 @@ public interface WxService {
      *
      * @param requestDto
      * @return
+     * @throws Exception
      */
     String getResponseXml(AutoReplyRequestDto requestDto) throws Exception ;
 

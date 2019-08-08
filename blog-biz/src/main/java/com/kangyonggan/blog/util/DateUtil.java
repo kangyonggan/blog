@@ -9,13 +9,11 @@ import java.util.Date;
  */
 public final class DateUtil {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss.SSS");
-
-    private DateUtil() {}
+    private DateUtil() {
+    }
 
     public static String toXmlDateTime(Date date) {
-        return DATE_FORMAT.format(date) + "T" + TIME_FORMAT.format(date) + "Z";
+        return new SimpleDateFormat("yyyy-MM-dd").format(date) + "T" + new SimpleDateFormat("HH:mm:ss.SSS").format(date) + "Z";
     }
 
 }
