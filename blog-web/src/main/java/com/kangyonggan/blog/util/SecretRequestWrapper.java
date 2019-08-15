@@ -137,9 +137,7 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
             parameterMap.put(key, new String[]{(String) value});
         } else if (value instanceof JSONArray) {
             JSONArray jsonArray = (JSONArray) value;
-            for (int i = 0; i < jsonArray.size(); i++) {
-                addParameter(key + "[" + i + "]", jsonArray.get(i));
-            }
+            addParameter(key, toStringArray(jsonArray));
         } else if (value instanceof JSONObject) {
             JSONObject jsonObject = (JSONObject) value;
             for (String jsonKey : jsonObject.keySet()) {
@@ -148,6 +146,14 @@ public class SecretRequestWrapper extends HttpServletRequestWrapper {
         } else {
             parameterMap.put(key, new String[]{String.valueOf(value)});
         }
+    }
+
+    private String[] toStringArray(JSONArray jsonArray) {
+        String[] arr = new String[jsonArray.size()];
+        for (int i = 0; i < jsonArray.size(); i++) {
+            arr[i] = String.valueOf(jsonArray.get(i));
+        }
+        return arr;
     }
 
     /**
