@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  * @author kangyonggan
  * @since 2018/6/3 0003
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DataSourceSwitch {
 

@@ -6,11 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.Configuration;
-
-import java.lang.reflect.Method;
 
 /**
  * @author kangyonggan
@@ -22,35 +18,16 @@ import java.lang.reflect.Method;
 public class DynamicDataSourceAop {
 
     /**
-     * 切入点
-     */
-    @Pointcut("execution(* com.kangyonggan.blog.service.*.*(..))")
-    public void pointCut() {
-    }
-
-    /**
      * 环绕方法
      *
      * @param joinPoint
+     * @param dataSourceSwitch
      * @return
      * @throws Throwable
      */
-    @Around("pointCut()")
-    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-        Class clazz = joinPoint.getTarget().getClass();
-
-        DataSourceSwitch dataSourceSwitch = (DataSourceSwitch) clazz.getDeclaredAnnotation(DataSourceSwitch.class);
-        if (dataSourceSwitch != null) {
-            DynamicDataSource.setDataSource(dataSourceSwitch.value());
-        }
-
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        Method method = clazz.getDeclaredMethod(methodSignature.getName(), methodSignature.getParameterTypes());
-
-        dataSourceSwitch = method.getAnnotation(DataSourceSwitch.class);
-        if (dataSourceSwitch != null) {
-            DynamicDataSource.setDataSource(dataSourceSwitch.value());
-        }
+    @Around("@annotation(dataSourceSwitch)")
+    public Object around(ProceedingJoinPoint joinPoint, DataSourceSwitch dataSourceSwitch) throws Throwable {
+        DynamicDataSource.setDataSource(dataSourceSwitch.value());
 
         Object result;
         try {

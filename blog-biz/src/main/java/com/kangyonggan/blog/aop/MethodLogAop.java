@@ -6,7 +6,6 @@ import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,21 +21,15 @@ import java.lang.reflect.Method;
 public class MethodLogAop {
 
     /**
-     * 切入点
-     */
-    @Pointcut("execution(* com.kangyonggan.blog.service.*.*(..))")
-    public void pointCut() {
-    }
-
-    /**
      * 环绕方法
      *
      * @param joinPoint
+     * @param methodLog
      * @return
      * @throws Throwable
      */
-    @Around("pointCut()")
-    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("@annotation(methodLog)")
+    public Object around(ProceedingJoinPoint joinPoint, MethodLog methodLog) throws Throwable {
         Object[] args = joinPoint.getArgs();
         Class clazz = joinPoint.getTarget().getClass();
 
@@ -44,21 +37,14 @@ public class MethodLogAop {
         Method method = clazz.getDeclaredMethod(methodSignature.getName(), methodSignature.getParameterTypes());
         String targetName = "[" + clazz.getName() + "." + method.getName() + "]";
 
-        MethodLog methodLog = method.getAnnotation(MethodLog.class);
-        Object result;
-        if (methodLog != null) {
-            log.info("进入方法:{} - args: {}", targetName, JSON.toJSONString(args));
+        log.info("进入方法:{} - args: {}", targetName, JSON.toJSONString(args));
+        long beginTime = System.currentTimeMillis();
+        Object result = joinPoint.proceed(args);
+        long endTime = System.currentTimeMillis();
+        long time = endTime - beginTime;
 
-            long beginTime = System.currentTimeMillis();
-            result = joinPoint.proceed(args);
-            long endTime = System.currentTimeMillis();
-            long time = endTime - beginTime;
-
-            log.info("离开方法:{} - return: {}", targetName, JSON.toJSONString(result));
-            log.info("方法耗时:{}ms - {}", time, targetName);
-        } else {
-            result = joinPoint.proceed(args);
-        }
+        log.info("离开方法:{} - return: {}", targetName, JSON.toJSONString(result));
+        log.info("方法耗时:{}ms - {}", time, targetName);
 
         return result;
     }
