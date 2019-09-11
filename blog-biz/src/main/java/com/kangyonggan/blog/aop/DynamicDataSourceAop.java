@@ -2,6 +2,7 @@ package com.kangyonggan.blog.aop;
 
 import com.kangyonggan.blog.annotation.DataSourceSwitch;
 import com.kangyonggan.blog.configuration.DynamicDataSource;
+import com.kangyonggan.blog.constants.MultiDataSource;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -27,6 +28,7 @@ public class DynamicDataSourceAop {
      */
     @Around("@annotation(dataSourceSwitch)")
     public Object around(ProceedingJoinPoint joinPoint, DataSourceSwitch dataSourceSwitch) throws Throwable {
+        MultiDataSource oldDataSource = DynamicDataSource.get();
         DynamicDataSource.setDataSource(dataSourceSwitch.value());
 
         Object result;
@@ -35,7 +37,7 @@ public class DynamicDataSourceAop {
         } catch (Throwable throwable) {
             throw new RuntimeException(throwable);
         } finally {
-            DynamicDataSource.remove();
+            DynamicDataSource.setDataSource(oldDataSource);
         }
 
         return result;

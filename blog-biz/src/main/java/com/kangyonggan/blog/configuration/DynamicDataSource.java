@@ -15,12 +15,12 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         DATA_SOURCES.set(dataSource);
     }
 
-    @Override
-    protected MultiDataSource determineCurrentLookupKey() {
+    public static MultiDataSource get() {
         return DATA_SOURCES.get();
     }
 
-    public static void remove() {
-        DATA_SOURCES.remove();
+    @Override
+    protected MultiDataSource determineCurrentLookupKey() {
+        return DATA_SOURCES.get();
     }
 }
