@@ -414,7 +414,7 @@ public class NovelServiceImpl extends BaseService<Novel> implements NovelService
     private Elements getSectionList(Novel novel) {
         if (NovelSource.NS01.getCode().equals(novel.getSource())) {
             // biquga
-            Document document = HtmlUtil.parseUrl(NovelSource.NS01.getUrl() + novel.getCode());
+            Document document = HtmlUtil.parseUrl(NovelSource.NS01.getUrl() + novel.getCode() + "/");
             return document.select("#list dd a");
         } else if (NovelSource.NS02.getCode().equals(novel.getSource())) {
             // biqubao
