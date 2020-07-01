@@ -38,7 +38,7 @@
         <plugin.mybatis-generator.version>1.3.2</plugin.mybatis-generator.version>
 
         <!--db-->
-        <mysql.version>5.1.46</mysql.version>
+        <mysql.version>8.0.16</mysql.version>
         <spring-boot-mybatis.version>1.3.2</spring-boot-mybatis.version>
         <tk.mybatis.version>2.0.3</tk.mybatis.version>
         <mybatis-mapper.version>3.3.8</mybatis-mapper.version>
