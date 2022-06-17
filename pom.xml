@@ -63,7 +63,7 @@
         <!--other-->
         <lombok.version>1.16.8</lombok.version>
         <persistence-api.version>1.0.2</persistence-api.version>
-        <fastjson.version>1.2.8</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <jackson-dataformat-yaml.version>2.9.8</jackson-dataformat-yaml.version>
         <jsoup.version>1.11.3</jsoup.version>
         <pegdown.version>1.6.0</pegdown.version>
